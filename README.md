@@ -31,7 +31,7 @@
    ㄴ expiry_logic.py         : 유통기한 임박 판단
    ㄴ alert_handler.py        : 경고 발생 판단 및 처리
 ㄴ 📁 api                     : 서버 및 GUI와의 통신 처리 (REST API 호출, WebSocket 전송 등)
-   ㄴ client.py               : HTTP/WS 요청 및 응답 처리 함수 정의
+   ㄴ server_client.py               : HTTP/WS 요청 및 응답 처리 함수 정의
 ㄴ 📁 utils                   : 공통 유틸리티 함수 모음
    ㄴ time_utils.py           : 시간 포맷 변환, 타임스탬프 변환 등
    ㄴ parser.py               : 수신된 MQTT payload 해석 및 형식 검사
@@ -71,4 +71,6 @@
 
 
 📁 test : 테스트 코드 및 시나리오
+ㄴ 📁 simulator: 가상 시뮬레이션
+   ㄴ bacode_simulator.py  : 바코드 시뮬레이터
 ```

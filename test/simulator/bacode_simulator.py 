@@ -1,0 +1,28 @@
+import time
+import json
+import paho.mqtt.client as mqtt
+
+MQTT_HOST = "localhost"
+MQTT_PORT = 1883
+TOPIC = "v1/conv/bc/scan"
+
+client = mqtt.Client()
+
+client.connect(MQTT_HOST, MQTT_PORT)
+client.loop_start()
+
+def simulate_barcode_scan():
+    fake_data = {
+        "id": "0123",           # 제품 ID
+        "comp": "99",           # 제조사 코드
+        "exp": "250803",        # 유통기한 YYMMDD
+        "ts": int(time.time())  # 타임스탬프
+    }
+    payload = json.dumps(fake_data)
+    client.publish(TOPIC, payload, qos=1)
+    print(f"📤 바코드 전송됨 → {payload}")
+
+if __name__ == "__main__":
+    while True:
+        simulate_barcode_scan()
+        time.sleep(10)  # 5초마다 바코드 1건씩 전송
