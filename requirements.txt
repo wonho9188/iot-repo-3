@@ -1,0 +1,19 @@
+# 웹 서버 (웹 API를 만들기 위한 도구)
+fastapi==0.103.1
+uvicorn==0.23.2
+
+# 웹소켓 (실시간 통신을 위한 도구)
+websockets==11.0.3
+
+# MQTT (하드웨어와 통신하기 위한 도구)
+paho-mqtt==2.2.1
+
+# 데이터베이스 연결
+sqlalchemy==2.0.20
+pymysql==1.1.0
+
+# 환경 설정 관리
+python-dotenv==1.0.0
+
+# 데이터 변환
+pydantic==2.3.0
