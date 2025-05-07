@@ -2,26 +2,38 @@
 
 ## 폴더 별 역할
 ```
-📁 controller/     : 시스템 간 데이터 흐름을 조정
-ㄴ 📁 api/         : 서버(FastAPI)와 통신하는 HTTP/WebSocket 클라이언트 로직
-  ㄴ __init__.py    : 모듈 초기화
-  ㄴ client.py      : REST API 호출, WebSocket 연결 관리
-ㄴ 📁 arduino/      : Arduino(ESP32 포함)와 직렬(Serial) 통신 관리
-  ㄴ __init__.py    : 모듈 초기화
-  ㄴ serial_manager.py : USB/UART 포트 열기·읽기·쓰기 로직
-  ㄴ protocol.py       : 아두이노 간 커맨드·응답 패킷 포맷 정의
-ㄴ 📁 logic/           : 핵심 비즈니스 흐름(기능) 구현
-  ㄴ inventory_logic.py  : 입고·출고·재고 관리 로직
-  ㄴ environment.py    : 온습도 모니터링 및 제어 로직
-  ㄴ notification.py   : 알림·경고 트리거 처리
+📁 gateway      센서 메시지를 받아 해석, 분기 처리 후 server, GUI로 전달 
+ㄴ 📁 mqtt                : 
+   ㄴ mqtt_client.py          : Mosquitto 브로커와 연결하는 MQTT 클라이언트 코드 (paho-mqtt 사용)
+ㄴ 📁 logic               : 센서 이벤트에 따른 분기 처리 (분류, 입고, 출입 판단 등)
+   ㄴ inventory_logic.py      : 입출고 및 구역 배정 처리
+   ㄴ access_logic.py         : 출입 기록 판단 및 기록
+   ㄴ expiry_logic.py         : 유통기한 임박 판단
+   ㄴ alert_handler.py        : 경고 발생 판단 및 처리
+ㄴ 📁 api                 : 서버 및 GUI와의 통신 처리 (REST API 호출, WebSocket 전송 등)
+   ㄴ client.py               : HTTP/WS 요청 및 응답 처리 함수 정의
+ㄴ 📁 utils               : 공통 유틸리티 함수 모음
+   ㄴ time_utils.py           : 시간 포맷 변환, 타임스탬프 변환 등
+   ㄴ parser.py               : 수신된 MQTT payload 해석 및 형식 검사
 
 📁 docs : 설명 문서
 ㄴ CODE_STANDARD.md : 코딩 스탠다드
 
 📁 firmware : C++ 기반 아두이노 관리 폴더 (ino 확장자)
-ㄴ 📁 modules : 모듈 폴더
-ㄴ main.ino : 진입점, setup()과 loop()만 존재
-ㄴ config.h : 핀 번호, 상수 정의
+ㄴ config.h                 : 핀 번호, MQTT 토픽, 상수 등 공통 설정 정의
+ㄴ main.ino                 : 진입점. setup()과 loop()만 존재하며 직접 로직 없음
+ㄴ 📁 modules               : 센서 및 액추에이터별 기능 구현 파일
+   ㄴ barcode.ino           : 바코드 스캐너 제어 및 MQTT 전송
+   ㄴ ir_sensor.ino         : 분류대 IR 센서 감지 처리
+   ㄴ dc_motor.ino          : 컨베이어용 DC 모터 제어
+   ㄴ temp_humidity.ino     : 온도/습도 센서 측정 및 전송
+   ㄴ fan.ino               : 창고 팬 작동 및 자동 제어
+   ㄴ rfid.ino              : 출입관리용 RFID 리더기 처리
+ㄴ 📁 communication         : MQTT 통신 관련 공통 코드
+   ㄴ mqtt_util.ino         : MQTT 연결, publish(), reconnect 등 처리
+   ㄴ packet_helper.ino     : JSON 포맷 구성, 토픽 문자열 생성 등 유틸 함수
+ㄴ 📁 include               : 공통 헤더 파일 정의
+   ㄴ sensors.h             : 각 센서별 init_함수, read_함수 선언용 헤더
 
 📁 gui : GUI 파일
 ㄴ 📁 components : 공통으로 사용되는 UI 요소
