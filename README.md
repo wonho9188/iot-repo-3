@@ -47,16 +47,13 @@
 ㄴ 📁 models                   : SQLAlchemy 기반 DB 모델 정의
    ㄴ inventory_model.py       : 재고 DB 모델
    ㄴ access_model.py          : 출입 DB 모델
-ㄴ 📁 schemas                  : Pydantic 기반 요청/응답 스키마
+ㄴ 📁 schemas                  : Pydantic 요청/응답 스키마 (유효성 검사를 해주는 도구)
    ㄴ inventory_schema.py      : 재고 관련 요청/응답 구조 정의
    ㄴ access_schema.py         : 출입 관련 요청/응답 구조 정의
 ㄴ 📁 database                 : DB 연결 초기화 및 세션 관리
    ㄴ __init__.py
 ㄴ config.py                  : 환경설정 (DB URL, 포트, 시크릿 등)
 ㄴ app.py                     : FastAPI 진입점 (라우터 등록, 실행)
-
-
-
 
 📁 gui : GUI 파일
 ㄴ 📁 components : 공통으로 사용되는 UI 요소
