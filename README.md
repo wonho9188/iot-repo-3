@@ -6,6 +6,8 @@
 📁 docs : 설명 문서
 ㄴ CODE_STANDARD.md : 코딩 스탠다드
 ㄴ .env   : 시스템의 모든 설정을 중앙화
+ㄴ config.py  : 애플리케이션 설정값(환경 변수, 상수 등)을 저장
+
 📁 firmware : C++ 기반 아두이노 관리 폴더 (ino 확장자)
 ㄴ config.h                 : 핀 번호, MQTT 토픽, 상수 등 공통 설정 정의
 ㄴ main.ino                 : 진입점. setup()과 loop()만 존재하며 직접 로직 없음
@@ -22,33 +24,39 @@
 ㄴ 📁 include               : 공통 헤더 파일 정의
    ㄴ sensors.h             : 각 센서별 init_함수, read_함수 선언용 헤더
 
-📁 gateway              :  하드웨어-GUI 사이의 중앙 통신 및 비즈니스 로직 
-ㄴ app.py                :  서버 진입점
-ㄴ config.py             :  설정 파일
-ㄴdatabase.py            :  데이터베이스 연결 및 모델
-ㄴ mqtt_handler.py       :  MQTT 메시지 처리
-ㄴ api_routes.py         :  API 라우트 정의
-ㄴ websocket_handler.py  :  WebSocket 처리
-ㄴ requirements.txt      :  의존성 패키지 목록
+📁 communications : 통신 처리 전담 모듈
+ㄴ init.py : 패키지 초기화 파일
+ㄴ main.py : FastAPI 서버 진입점
+ㄴ mqtt_client.py : MQTT 연결 및 메시지 수신 처리
+ㄴ websocket.py : WebSocket 연결 관리 및 실시간 처리
+ㄴ 📁 api : REST API 정의 모듈
+   ㄴ init.py : API 라우터 초기화
+   ㄴ dashboard.py : 시스템 요약 대시보드 API
+   ㄴ inventory.py : 재고 CRUD API
+   ㄴ expiry.py : 유통기한 및 폐기 처리 API
+   ㄴ device.py : 장치 제어 (컨베이어, 환경센서) API
+   ㄴ access.py : 직원 출입기록 API
 
-📁 server   : 백엔드 서버 (FastAPI 기반)
-ㄴ 📁 routers                  : REST API 엔드포인트 정의
-   ㄴ inventory_router.py      : 입출고 관련 라우팅
-   ㄴ access_router.py         : 출입관리 라우팅
-ㄴ 📁 services                 : 주요 도메인 로직 구현 (입출고, 출입 기록, 경고 판단)
-   ㄴ inventory_service.py     : 입고/출고 처리 및 구역 배정
-   ㄴ access_service.py        : 출입 기록 판단 및 저장
-   ㄴ expiry_service.py        : 유통기한 임박 판단
-ㄴ 📁 models                   : SQLAlchemy 기반 DB 모델 정의
-   ㄴ inventory_model.py       : 재고 DB 모델
-   ㄴ access_model.py          : 출입 DB 모델
-ㄴ 📁 schemas                  : Pydantic 요청/응답 스키마 (유효성 검사를 해주는 도구)
-   ㄴ inventory_schema.py      : 재고 관련 요청/응답 구조 정의
-   ㄴ access_schema.py         : 출입 관련 요청/응답 구조 정의
-ㄴ 📁 database                 : DB 연결 초기화 및 세션 관리
-   ㄴ __init__.py
-ㄴ config.py                  : 환경설정 (DB URL, 포트, 시크릿 등)
-ㄴ app.py                     : FastAPI 진입점 (라우터 등록, 실행)
+📁 controllers : 주요 도메인 로직 담당 모듈
+ㄴ init.py : 패키지 초기화 파일
+ㄴ inventory.py : 입출고 및 재고처리 로직
+ㄴ expiry.py : 유통기한 확인 및 폐기 판단 로직
+ㄴ device.py : 환경/장치 제어 로직
+ㄴ access.py : 출입 로그 판단 및 권한 검증
+ㄴ 📁 hardware : 실제 하드웨어 제어 모듈
+   ㄴ init.py : 하드웨어 초기화
+   ㄴ conveyor.py : 컨베이어벨트 동작 제어
+   ㄴ barcode.py : 바코드 스캐너 인터페이스
+   ㄴ temperature.py : 온습도 센서 데이터 수집
+   ㄴ rfid.py : 출입용 RFID 리더기 처리
+
+📁 models : DB 모델 정의 (SQLAlchemy 기반)
+ㄴ init.py : 패키지 초기화
+ㄴ database.py : DB 연결 및 세션 구성
+ㄴ item.py : 재고 물품 정보 모델
+ㄴ employee.py : 직원 정보 모델
+ㄴ access_log.py : 출입기록 저장 모델
+ㄴ environment_log.py : 온습도 로그 저장 모델
 
 📁 gui : GUI 파일
 ㄴ 📁 components : 공통으로 사용되는 UI 요소
