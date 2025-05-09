@@ -1,35 +1,28 @@
-"""
-mqtt_client.py
-MQTT 클라이언트 모듈 - 하드웨어와의 통신을 담당
-"""
-
 import json
 import time
 import logging
 import paho.mqtt.client as mqtt
 import requests
 from typing import Dict, Any, Callable
-
-# 설정 파일 임포트
 import sys
 from pathlib import Path
 
-# 상대 경로를 사용하여 루트 디렉토리 찾기
-ROOT_DIR = Path(__file__).parent.parent
+ROOT_DIR = Path(__file__).parent.parent     # 상대 경로를 사용하여 루트 디렉토리 찾기
 sys.path.insert(0, str(ROOT_DIR))
 
 from config import CONFIG
 
-# 로거 설정
+# ===== 로거 설정 =====
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[logging.StreamHandler()]
 )
+
 logger = logging.getLogger("mqtt_client")
 
+# ===== 하드웨어 장치들과의 통신 담당 =====
 class MQTTClient:
-    """MQTT 클라이언트 클래스: 하드웨어 장치들과의 통신을 담당"""
     
     _instance = None  # 싱글톤 인스턴스
     
@@ -50,7 +43,9 @@ class MQTTClient:
         self.topic_prefix = CONFIG["TOPIC_PREFIX"]
         
         # 토픽별 콜백 함수 저장
+        self.topic_handlers = {}         # 토픽별 콜백 함수 저장
         self.topic_handlers = {}
+        VVVV
         
         # MQTT 클라이언트 생성
         self.client = mqtt.Client(client_id=self.client_id, protocol=mqtt.MQTTv311)
@@ -63,7 +58,6 @@ class MQTTClient:
         self.connected = False
         
     def connect(self):
-        """MQTT 브로커에 연결"""
         try:
             logger.info(f"MQTT 브로커 {self.broker}:{self.port}에 연결 시도...")
             self.client.connect(self.broker, self.port, 60)
