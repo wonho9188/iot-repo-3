@@ -24,31 +24,21 @@
 ㄴ 📁 include               : 공통 헤더 파일 정의
    ㄴ sensors.h             : 각 센서별 init_함수, read_함수 선언용 헤더
 
-📁 communications : 통신 처리 전담 모듈
-ㄴ init.py : 패키지 초기화 파일
-ㄴ main.py : FastAPI 서버 진입점
-ㄴ mqtt_client.py : MQTT 연결 및 메시지 수신 처리
-ㄴ websocket.py : WebSocket 연결 관리 및 실시간 처리
-ㄴ 📁 api : REST API 정의 모듈
-   ㄴ init.py : API 라우터 초기화
-   ㄴ dashboard.py : 시스템 요약 대시보드 API
-   ㄴ inventory.py : 재고 CRUD API
-   ㄴ expiry.py : 유통기한 및 폐기 처리 API
-   ㄴ device.py : 장치 제어 (컨베이어, 환경센서) API
-   ㄴ access.py : 직원 출입기록 API
-
-📁 controllers : 주요 도메인 로직 담당 모듈
-ㄴ init.py : 패키지 초기화 파일
-ㄴ inventory.py : 입출고 및 재고처리 로직
-ㄴ expiry.py : 유통기한 확인 및 폐기 판단 로직
-ㄴ device.py : 환경/장치 제어 로직
-ㄴ access.py : 출입 로그 판단 및 권한 검증
-ㄴ 📁 hardware : 실제 하드웨어 제어 모듈
-   ㄴ init.py : 하드웨어 초기화
-   ㄴ conveyor.py : 컨베이어벨트 동작 제어
-   ㄴ barcode.py : 바코드 스캐너 인터페이스
-   ㄴ temperature.py : 온습도 센서 데이터 수집
-   ㄴ rfid.py : 출입용 RFID 리더기 처리
+📁 server/
+├── main.py              # 서버 진입점 (FastAPI + TCP 소켓 서버)
+├── config.py            # 설정 (IP, 포트, 상수값)
+├── db.py                # 간단한 DB 연결 (MySQL)
+├── 📁 controllers/      # 각 디바이스 컨트롤러 로직
+│   ├── sort_controller.py     # 분류기 관련 로직
+│   ├── env_controller.py      # 환경 제어 로직
+│   └── access_controller.py   # 출입 관리 로직
+├── 📁 api/              # REST API 엔드포인트
+│   ├── sort_api.py            # 분류기 관련 API
+│   ├── env_api.py             # 환경 관련 API
+│   └── access_api.py          # 출입 관련 API
+└── 📁 utils/            # 유틸리티 함수들
+    ├── tcp_handler.py          # TCP 소켓 연결 관리
+    └── websocket_manager.py    # WebSocket 연결 관리
 
 📁 models : DB 모델 정의 (SQLAlchemy 기반)
 ㄴ init.py : 패키지 초기화
