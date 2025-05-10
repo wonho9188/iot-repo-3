@@ -66,6 +66,7 @@ CREATE TABLE `error` (
 
 LOCK TABLES `error` WRITE;
 /*!40000 ALTER TABLE `error` DISABLE KEYS */;
+INSERT INTO `error` VALUES ('E100','환경','온도 센서 오류','센서 연결 상태 확인'),('E101','환경','온도/습도 범위 초과','팬 작동 및 설정값 확인'),('E200','바코드','바코드 읽기 실패','바코드 상태 확인'),('E201','바코드','바코드 형식 오류','데이터 형식 검증'),('E300','컨베이어','적외선 센서 오류','센서 전원/연결 확인'),('E301','컨베이어','모터 과부하','모터 상태 점검'),('E302','컨베이어','서보모터 동작 실패','서보모터 점검'),('E400','보안','RFID 읽기 실패','태그 접촉 확인'),('E401','보안','미등록 RFID','태그 등록 필요'),('E402','보안','출입문 동작 실패','서보모터 점검'),('E500','통신','MQTT 연결 실패','네트워크/브로커 확인'),('E501','통신','데이터베이스 연결 실패','DB 서버 확인'),('E999','시스템','정의되지 않은 오류','시스템 로그 확인');
 /*!40000 ALTER TABLE `error` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,4 +222,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-10 14:43:20
+-- Dump completed on 2025-05-10 15:02:39
