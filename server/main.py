@@ -8,7 +8,7 @@ from api.env_api import bp as env_bp
 from api.access_api import bp as access_bp
 from api.expiry_api import bp as expiry_bp
 from controllers.system_controller import get_system_status 
-from controllers.sort_controller import SortController
+from controllers.sort.sort_controller import SortController
 from utils.tcp_handler import TCPHandler
 
 # TCP 핸들러 초기화

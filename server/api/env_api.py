@@ -1,94 +1,67 @@
-from datetime import datetime
-from typing import Dict, Optional
-from flask import Blueprint, jsonify, request
+# server/api/env_api.py
+from flask import request, jsonify
+from . import api_bp, controller
 
-# Blueprint 초기화
-router = Blueprint('environment', __name__, url_prefix='/api/environment')
-
-# 컨트롤러 의존성
-def get_env_controller():
-    """환경 제어 컨트롤러 인스턴스를 반환합니다."""
-    try:
-        from server.main import init_controllers
-        controllers = init_controllers()
-        return controllers["env"]
-    except ImportError:
-        try:
-            from main import init_controllers
-            controllers = init_controllers()
-            return controllers["env"]
-        except ImportError:
-            import sys
-            import os
-            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            from server.main import init_controllers
-            controllers = init_controllers()
-            return controllers["env"]
-
-@router.route("/set-temperature", methods=["POST"])
-def set_temperature():
-    """온도 설정"""
-    try:
-        data = request.json
-        warehouse = data.get("warehouse")
-        temperature = data.get("temperature")
-        
-        if not warehouse or temperature is None:
-            return jsonify({"success": False, "error": "창고와 온도를 지정해야 합니다."}), 400
-        
-        controller = get_env_controller()
-        result = controller.set_temperature(warehouse, temperature)
-        return jsonify({
-            "success": True, 
-            "message": f"{warehouse} 창고 온도가 {temperature}로 설정되었습니다."
-        })
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e),
-            "timestamp": datetime.now().isoformat()
-        }), 500
-
-@router.route("/status", methods=["GET"])
+# ==== 환경 상태 조회 ====
+@api_bp.route('/environment/status', methods=['GET'])
 def get_environment_status():
-    """환경 상태 조회"""
-    try:
-        controller = get_env_controller()
-        status = controller.get_environment_status()
-        return jsonify({
-            "success": True,
-            "data": status,
-            "timestamp": datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e),
-            "timestamp": datetime.now().isoformat()
-        }), 500
+    """현재 환경 상태를 조회합니다."""
+    if not controller:
+        return jsonify({"status": "error", "message": "컨트롤러가 초기화되지 않았습니다"}), 500
+    
+    result = controller.env_controller.get_status()
+    return jsonify(result)
 
-@router.route("/history", methods=["GET"])
-def get_temperature_history():
-    """온도 히스토리 조회"""
+# ==== 창고별 상태 조회 ====
+@api_bp.route('/environment/warehouse/<warehouse>', methods=['GET'])
+def get_warehouse_status(warehouse):
+    """특정 창고의 환경 상태를 조회합니다."""
+    if not controller:
+        return jsonify({"status": "error", "message": "컨트롤러가 초기화되지 않았습니다"}), 500
+    
+    # 창고 ID 검증
+    if warehouse not in ['A', 'B', 'C', 'D']:
+        return jsonify({"status": "error", "message": "유효하지 않은 창고 ID"}), 400
+    
+    result = controller.env_controller.get_warehouse_status(warehouse)
+    
+    if result.get("status") == "error":
+        return jsonify(result), 400
+    
+    return jsonify(result)
+
+# ==== 온도 설정 ====
+@api_bp.route('/environment/control', methods=['PUT'])
+def set_environment_control():
+    """창고 온도 제어 설정을 변경합니다."""
+    if not controller:
+        return jsonify({"status": "error", "message": "컨트롤러가 초기화되지 않았습니다"}), 500
+    
+    data = request.json
+    
+    # 필수 파라미터 확인
+    if not data or 'warehouse' not in data or 'target_temp' not in data:
+        return jsonify({
+            "status": "error",
+            "message": "필수 파라미터 누락: warehouse, target_temp"
+        }), 400
+    
+    warehouse = data['warehouse']
+    target_temp = data['target_temp']
+    
+    # 창고 ID 검증
+    if warehouse not in ['A', 'B', 'C', 'D']:
+        return jsonify({"status": "error", "message": "유효하지 않은 창고 ID"}), 400
+    
+    # 온도 유효성 검증
     try:
-        warehouse = request.args.get("warehouse")
-        hours = request.args.get("hours", default=24, type=int)
-        
-        if not warehouse:
-            return jsonify({"success": False, "error": "창고 ID를 지정해야 합니다."}), 400
-            
-        controller = get_env_controller()
-        history = controller.get_temperature_history(warehouse, hours)
-        
-        return jsonify({
-            "success": True,
-            "warehouse": warehouse,
-            "data": history,
-            "timestamp": datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e),
-            "timestamp": datetime.now().isoformat()
-        }), 500
+        target_temp = float(target_temp)
+    except ValueError:
+        return jsonify({"status": "error", "message": "온도는 숫자여야 합니다"}), 400
+    
+    result = controller.env_controller.set_target_temperature(warehouse, target_temp)
+    
+    if result.get("status") == "error":
+        return jsonify(result), 400
+    
+    return jsonify(result)

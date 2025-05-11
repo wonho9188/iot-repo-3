@@ -339,12 +339,11 @@ class SortEventHandler:
             self.auto_stop_timer.cancel()
             self.auto_stop_timer = None
     
-    # ==== 자동 정지 타임아웃 처리 ====
+   # ==== 자동 정지 타임아웃 처리 ====
     def _auto_stop_timeout(self):
-        from .sort_controller import SortStatus  # 순환 참조 방지
-        
+        """자동 정지 타이머 만료 시 호출됩니다."""
         # 타이머 발생 시 분류기가 여전히 작동 중이고 대기 물품이 없는 경우
-        if self.controller.status == SortStatus.RUNNING.value and self.controller.items_waiting == 0:
+        if self.controller.status_manager.state == "running" and self.controller.status_manager.items_waiting == 0:
             logger.info("자동 정지: 10초간 물품 없음")
             
             # 정지 명령 전송
@@ -358,8 +357,8 @@ class SortEventHandler:
             self.tcp_handler.send_message("sr", command)
             
             # 상태 업데이트
-            self.controller.status = SortStatus.STOPPED.value
-            self.controller.motor_active = False
+            self.controller.status_manager.state = "stopped"
+            self.controller.status_manager.motor_active = False
             
             # 상태 업데이트 이벤트 발송
             self.controller._update_status()
@@ -367,5 +366,5 @@ class SortEventHandler:
             # Socket.IO 이벤트 발송
             self.controller._emit_socketio_event("auto_stopped", {
                 "reason": "no_items_timeout",
-                "status": self.controller.status
+                "status": self.controller.status_manager.state
             })

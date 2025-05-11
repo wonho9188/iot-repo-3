@@ -1,101 +1,55 @@
-from datetime import datetime
-from typing import Dict, Optional
-from flask import Blueprint, jsonify, request
+# server/api/sort_api.py
+from flask import request, jsonify
+from . import api_bp, controller
 
-# Blueprint 초기화
-router = Blueprint('sort', __name__, url_prefix='/api/sort')
+# ==== 분류 시작 ====
+@api_bp.route('/inbound/start', methods=['POST'])
+def start_inbound():
+    """분류기 작동을 시작합니다."""
+    if not controller:
+        return jsonify({"status": "error", "message": "컨트롤러가 초기화되지 않았습니다"}), 500
+    
+    result = controller.sort_controller.start_sorting()
+    
+    if result.get("status") == "error":
+        return jsonify(result), 400
+    
+    return jsonify(result)
 
-# 컨트롤러 의존성
-def get_sort_controller():
-    """분류기 컨트롤러 인스턴스를 반환합니다."""
-    try:
-        from server.main import init_controllers
-        controllers = init_controllers()
-        return controllers["sort"]
-    except ImportError:
-        try:
-            from main import init_controllers
-            controllers = init_controllers()
-            return controllers["sort"]
-        except ImportError:
-            import sys
-            import os
-            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            from server.main import init_controllers
-            controllers = init_controllers()
-            return controllers["sort"]
+# ==== 분류 종료 ====
+@api_bp.route('/inbound/stop', methods=['POST'])
+def stop_inbound():
+    """분류기 작동을 정지합니다."""
+    if not controller:
+        return jsonify({"status": "error", "message": "컨트롤러가 초기화되지 않았습니다"}), 500
+    
+    result = controller.sort_controller.stop_sorting()
+    
+    if result.get("status") == "error":
+        return jsonify(result), 400
+    
+    return jsonify(result)
 
-@router.route("/start", methods=["POST"])
-def start_sorting():
-    """분류 작업을 시작합니다."""
-    try:
-        controller = get_sort_controller()
-        result = controller.start_sorting()
-        return jsonify({
-            "status": "success",
-            "message": "분류 작업이 시작되었습니다.",
-            "timestamp": datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            "status": "error",
-            "message": str(e),
-            "timestamp": datetime.now().isoformat()
-        }), 500
-
-@router.route("/stop", methods=["POST"])
-def stop_sorting():
-    """분류 작업을 중지합니다."""
-    try:
-        controller = get_sort_controller()
-        result = controller.stop_sorting()
-        return jsonify({
-            "status": "success",
-            "message": "분류 작업이 중지되었습니다.",
-            "timestamp": datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            "status": "error",
-            "message": str(e),
-            "timestamp": datetime.now().isoformat()
-        }), 500
-
-@router.route("/emergency/stop", methods=["POST"])
+# ==== 비상 정지 ====
+@api_bp.route('/emergency/stop', methods=['POST'])
 def emergency_stop():
-    """비상 정지를 실행합니다."""
-    try:
-        controller = get_sort_controller()
-        result = controller.emergency_stop()
-        return jsonify({
-            "status": "success",
-            "message": "비상 정지가 실행되었습니다.",
-            "timestamp": datetime.now().isoformat(),
-            "auto_dismiss": False  # 수동으로 해제해야 함
-        })
-    except Exception as e:
-        return jsonify({
-            "status": "error",
-            "message": str(e),
-            "timestamp": datetime.now().isoformat()
-        }), 500
+    """분류기를 긴급 정지합니다."""
+    if not controller:
+        return jsonify({"status": "error", "message": "컨트롤러가 초기화되지 않았습니다"}), 500
+    
+    result = controller.sort_controller.emergency_stop()
+    
+    if result.get("status") == "error":
+        return jsonify(result), 400
+    
+    return jsonify(result)
 
-@router.route("/status", methods=["GET"])
-def get_status():
+# ==== 분류기 상태 조회 ====
+@api_bp.route('/inbound/status', methods=['GET'])
+def get_inbound_status():
     """현재 분류기 상태를 조회합니다."""
-    try:
-        controller = get_sort_controller()
-        status = controller.check_status()
-        return jsonify({
-            "status": "success",
-            "current_status": status["status"],
-            "waiting_count": status["waiting"],
-            "processed_count": status["processed"],
-            "timestamp": status["timestamp"]
-        })
-    except Exception as e:
-        return jsonify({
-            "status": "error",
-            "message": str(e),
-            "timestamp": datetime.now().isoformat()
-        }), 500
+    if not controller:
+        return jsonify({"status": "error", "message": "컨트롤러가 초기화되지 않았습니다"}), 500
+    
+    result = controller.sort_controller.get_status()
+    return jsonify(result)

@@ -21,6 +21,7 @@ SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
 SERVER_PORT = int(os.getenv("SERVER_PORT", "8000"))
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
+
 # ===== 데이터베이스 설정 =====
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = int(os.getenv("DB_PORT", "3306"))
@@ -37,6 +38,16 @@ HARDWARE_IP = {
     'env_controller_cd': os.getenv("ENV_CD_CONTROLLER_IP", '192.168.0.103'),
     'access_controller': os.getenv("ACCESS_CONTROLLER_IP", '192.168.0.104')
 }
+
+# ===== 멀티포트모드 TCP 하드웨어 통신 설정 =====
+MULTI_PORT_MODE = os.getenv("MULTI_PORT_MODE", "False").lower() == "true"
+TCP_PORTS = {
+    'sort_controller': int(os.getenv("SORT_CONTROLLER_PORT", "9001")),
+    'env_controller_ab': int(os.getenv("ENV_AB_CONTROLLER_PORT", "9002")),
+    'env_controller_cd': int(os.getenv("ENV_CD_CONTROLLER_PORT", "9003")),
+    'access_controller': int(os.getenv("ACCESS_CONTROLLER_PORT", "9004"))
+}
+
 
 # ===== Socket.IO 설정 =====
 SOCKETIO_PING_TIMEOUT = int(os.getenv("SOCKETIO_PING_TIMEOUT", "5"))
