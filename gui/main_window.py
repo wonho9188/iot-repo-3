@@ -3,31 +3,34 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6 import uic
-import numpy as np
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
-import koreanize_matplotlib
 
 from modules.dashboard import DashboardPage
+from modules.devices import DevicesPage
+from modules.environment import EnvironmentPage
+from modules.inventory import InventoryPage
+from modules.expiration import ExpirationPage
+from modules.access import AccessPage
 
 class WindowClass(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/main_window.ui", self)
-        self.setWindowTitle("물류 관리 시스템")
+        self.setWindowTitle("RAIL - 물류 관리 시스템")
 
         # 개별 페이지 UI 파일 로드
         self.page_dashboard = DashboardPage()
-        self.page_inventory = uic.loadUi("ui/widgets/inventory.ui")
-        self.page_expiration = uic.loadUi("ui/widgets/expiration.ui")
-        self.page_devices = uic.loadUi("ui/widgets/devices.ui")
-        self.page_access = uic.loadUi("ui/widgets/access.ui")
+        self.page_devices = DevicesPage()
+        self.page_environment = EnvironmentPage()
+        self.page_inventory = InventoryPage()
+        self.page_expiration = ExpirationPage()     
+        self.page_access = AccessPage()       
         
         # stackedWidget에 페이지 추가
         self.stackedWidget.addWidget(self.page_dashboard)
-        self.stackedWidget.addWidget(self.page_inventory)
-        self.stackedWidget.addWidget(self.page_expiration)
         self.stackedWidget.addWidget(self.page_devices)
+        self.stackedWidget.addWidget(self.page_environment)
+        self.stackedWidget.addWidget(self.page_inventory)
+        self.stackedWidget.addWidget(self.page_expiration)        
         self.stackedWidget.addWidget(self.page_access)
 
         # 대시보드 스타일 설정
@@ -37,7 +40,7 @@ class WindowClass(QMainWindow):
         self.sidebarWidget.setStyleSheet("background-color: #2c2c2c;")
 
         # 사이드바 버튼 리스트
-        self.buttons = [self.btn_dashboard, self.btn_inventory, self.btn_expiration, self.btn_devices, self.btn_access]
+        self.buttons = [self.btn_dashboard, self.btn_devices, self.btn_environment, self.btn_inventory, self.btn_expiration, self.btn_access]
 
         # 사이드바 버튼 기본 스타일 설정
         for btn in self.buttons:
@@ -57,9 +60,10 @@ class WindowClass(QMainWindow):
 
         # 사이드바 버튼 클릭 이벤트 연결
         self.btn_dashboard.clicked.connect(lambda: self.activate_button(self.btn_dashboard, self.page_dashboard))
-        self.btn_inventory.clicked.connect(lambda: self.activate_button(self.btn_inventory, self.page_inventory))
-        self.btn_expiration.clicked.connect(lambda: self.activate_button(self.btn_expiration, self.page_expiration))
         self.btn_devices.clicked.connect(lambda: self.activate_button(self.btn_devices, self.page_devices))
+        self.btn_environment.clicked.connect(lambda: self.activate_button(self.btn_environment, self.page_environment))
+        self.btn_inventory.clicked.connect(lambda: self.activate_button(self.btn_inventory, self.page_inventory))
+        self.btn_expiration.clicked.connect(lambda: self.activate_button(self.btn_expiration, self.page_expiration))        
         self.btn_access.clicked.connect(lambda: self.activate_button(self.btn_access, self.page_access))
 
         # 초기 페이지 설정
