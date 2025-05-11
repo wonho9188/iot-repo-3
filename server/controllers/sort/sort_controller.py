@@ -21,27 +21,34 @@ class SortController:
         self.db_helper = db_helper
         
         # 상태 관리자 생성
-        self.status_manager = SortStatus(self)  
+        self.status_manager = SortStatus(self)
+        
         # 선반 관리자 생성
         self.shelf_manager = ShelfManager(db_helper)
+        
         # 바코드 파서 생성
         self.barcode_parser = BarcodeParser()
+        
         # 이벤트 핸들러 생성
         self.event_handler = SortEventHandler(self, tcp_handler, self.shelf_manager)
+        
         # 분류 기록 로그 (최근 10개)
         self.sort_logs = []
+        
         # TCP 핸들러에 이벤트 리스너 등록
         self._register_tcp_handlers()
-        logger.info("분류기 컨트롤러 초기화 완료")
-
-    # ==== TCP 핸들러에 이벤트 리스너 등록 ====
-    def register_handlers(self):
-        # 분류기(sr) 디바이스의 이벤트 핸들러 등록
-        self.tcp_handler.register_device_handler("sort_controller", "evt", self.handle_event)
-        # 응답(res) 타입 핸들러
-        self.tcp_handler.register_device_handler("sort_controller", "res", self.handle_response)
         
-        logger.info("분류기 이벤트 핸들러 등록 완료")
+        logger.info("분류기 컨트롤러 초기화 완료")
+    
+    # ==== TCP 핸들러에 이벤트 리스너 등록 ====
+    def _register_tcp_handlers(self):
+        """TCP 핸들러에 콜백 함수를 등록합니다."""
+        # 분류기(sr) 디바이스의 이벤트 핸들러 등록
+        self.tcp_handler.register_device_handler("sr", "evt", self.event_handler.handle_event)
+        # 응답(res) 타입 핸들러
+        self.tcp_handler.register_device_handler("sr", "res", self.event_handler.handle_response)
+        
+        logger.debug("TCP 핸들러에 이벤트 리스너 등록 완료")
 
     # ==== 분류 작업 시작 ====
     def start_sorting(self) -> dict:

@@ -48,7 +48,6 @@ class GateController:
         """TCP 핸들러에 콜백 함수를 등록합니다."""
         # Gate 컨트롤러(gt)의 이벤트 핸들러 등록
         self.tcp_handler.register_device_handler("gt", "evt", self.rfid_handler.handle_event)
-        
         # 응답(res) 타입 핸들러
         self.tcp_handler.register_device_handler("gt", "res", self.rfid_handler.handle_response)
         

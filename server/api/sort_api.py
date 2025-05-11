@@ -1,6 +1,6 @@
 # server/api/sort_api.py
 from flask import request, jsonify
-from . import api_bp, controller
+from . import bp, controller  
 
 # ==== 분류 시작 ====
 @api_bp.route('/inbound/start', methods=['POST'])

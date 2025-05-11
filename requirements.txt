@@ -1,24 +1,27 @@
 # Flask 
-Flask==2.0.1
-Werkzeug==2.0.1
-Jinja2==3.0.1
-itsdangerous==2.0.1
+Flask==2.3.3
+Werkzeug==2.3.7
+Jinja2==3.1.2
+itsdangerous==2.1.2
 
 # database
-PyMySQL==1.0.2
-SQLAlchemy==1.4.23
+PyMySQL==1.1.0
+SQLAlchemy==2.0.23
 
-#
+# logging
 python-dotenv==1.0.0
-loguru==0.5.3
-requests==2.26.0
+loguru==0.7.2
+requests==2.31.0
 
 # GUI
-PySide6==6.2.0
-numpy==1.21.2
-matplotlib==3.4.3
+PySide6==6.6.0
+numpy==1.26.0
+matplotlib==3.8.0
 koreanize-matplotlib==0.1.1
 
-# 
-pytest==6.2.5
-black==21.9b0 
+# test
+pytest==7.4.2
+black==23.9.1
+
+# system monitoring
+psutil==5.9.6

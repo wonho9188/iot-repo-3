@@ -21,14 +21,16 @@ SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
 SERVER_PORT = int(os.getenv("SERVER_PORT", "8000"))
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
-
-# ===== 데이터베이스 설정 =====
+# 데이터베이스 설정 부분만 수정
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = int(os.getenv("DB_PORT", "3306"))
-DB_USER = os.getenv("DB_USER", "root")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
+DB_USER = os.getenv("DB_USER", "user")  # 기본값 변경
+DB_PASSWORD = os.getenv("DB_PASSWORD", "")  # 기본값은 빈 문자열로 설정
 DB_NAME = os.getenv("DB_NAME", "rail_automation")
 DB_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+# DEBUG 설정 수정 (프로덕션에서는 기본값 False)
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # ===== TCP 하드웨어 통신 설정 =====
 TCP_PORT = int(os.getenv("TCP_PORT", "9000"))
