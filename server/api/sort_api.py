@@ -1,9 +1,11 @@
-# server/api/sort_api.py
-from flask import request, jsonify
-from . import bp, controller  
+from flask import Blueprint, request, jsonify
+from api import controller
+
+
+bp = Blueprint('sort_api', __name__)
 
 # ==== 분류 시작 ====
-@api_bp.route('/inbound/start', methods=['POST'])
+@bp.route('/inbound/start', methods=['POST'])
 def start_inbound():
     """분류기 작동을 시작합니다."""
     if not controller:
@@ -17,7 +19,7 @@ def start_inbound():
     return jsonify(result)
 
 # ==== 분류 종료 ====
-@api_bp.route('/inbound/stop', methods=['POST'])
+@bp.route('/inbound/stop', methods=['POST'])
 def stop_inbound():
     """분류기 작동을 정지합니다."""
     if not controller:
@@ -31,7 +33,7 @@ def stop_inbound():
     return jsonify(result)
 
 # ==== 비상 정지 ====
-@api_bp.route('/emergency/stop', methods=['POST'])
+@bp.route('/emergency/stop', methods=['POST'])
 def emergency_stop():
     """분류기를 긴급 정지합니다."""
     if not controller:
@@ -45,7 +47,7 @@ def emergency_stop():
     return jsonify(result)
 
 # ==== 분류기 상태 조회 ====
-@api_bp.route('/inbound/status', methods=['GET'])
+@bp.route('/inbound/status', methods=['GET'])
 def get_inbound_status():
     """현재 분류기 상태를 조회합니다."""
     if not controller:

@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 from flask import Blueprint, jsonify, request
 
 # Blueprint 초기화
-router = Blueprint('inventory', __name__, url_prefix='/api/inventory')
+bp = Blueprint('inventory', __name__)
 
 # 컨트롤러 의존성
 def get_inventory_controller():
@@ -25,7 +25,7 @@ def get_inventory_controller():
             controllers = init_controllers()
             return controllers["inventory"]
 
-@router.route("/status", methods=["GET"])
+@bp.route("/status", methods=["GET"])
 def get_inventory_status():
     """재고 상태 조회"""
     try:
@@ -43,7 +43,7 @@ def get_inventory_status():
             "timestamp": datetime.now().isoformat()
         }), 500
 
-@router.route("/items", methods=["GET"])
+@bp.route("/items", methods=["GET"])
 def get_inventory_items():
     """재고 물품 목록 조회"""
     try:
@@ -67,7 +67,7 @@ def get_inventory_items():
             "timestamp": datetime.now().isoformat()
         }), 500
 
-@router.route("/items/<item_id>", methods=["GET"])
+@bp.route("/items/<item_id>", methods=["GET"])
 def get_inventory_item(item_id):
     """재고 물품 상세 조회"""
     try:

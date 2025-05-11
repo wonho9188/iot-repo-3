@@ -18,7 +18,10 @@ import os
 log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
 os.makedirs(log_dir, exist_ok=True)
 
+# 로거는 한 번만 설정
 logger = setup_logger("server")
+logger.info("==== 서버 시작 ====")
+
 app = Flask(__name__)
 CORS(app)
 
@@ -41,15 +44,12 @@ sort_controller = SortController(tcp_handler, socketio)
 # API 컨트롤러 설정
 set_controller(sort_controller)  # API에 컨트롤러 등록
 
-logger = setup_logger("server")
-logger.info("==== 서버 시작 ====")
-
 # 기능별로 분리된 API 모듈을 등록
-app.register_blueprint(sort_bp, url_prefix='/api')
-app.register_blueprint(inventory_bp, url_prefix='/api')
-app.register_blueprint(env_bp, url_prefix='/api')
-app.register_blueprint(access_bp, url_prefix='/api')
-app.register_blueprint(expiry_bp, url_prefix='/api')
+app.register_blueprint(sort_bp, url_prefix='/api/sort')
+app.register_blueprint(inventory_bp, url_prefix='/api/inventory')
+app.register_blueprint(env_bp, url_prefix='/api/environment')
+app.register_blueprint(access_bp, url_prefix='/api/access')
+app.register_blueprint(expiry_bp, url_prefix='/api/expiry')
 
 @app.route('/api/status', methods=['GET'])
 def get_status():

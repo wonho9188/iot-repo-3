@@ -97,86 +97,85 @@ class AccessManager:
             # 상태 캐시 업데이트
             self.last_access_state[card_id] = entry_type
             
-          # server/controllers/gate/access_manager.py (계속)
-           return {
-               "access": True,
-               "entry_type": entry_type,
-               "employee_name": employee.get("name"),
-               "employee_id": employee.get("id"),
-               "department": employee.get("department")
-           }
-       
-       except Exception as e:
-           logger.error(f"출입 권한 확인 중 오류: {str(e)}")
-           return {
-               "access": False,
-               "reason": "system_error"
-           }
-   
-   # ==== 출입 기록 조회 ====
-   def get_access_logs(self, date: str = None, limit: int = 50) -> List[Dict[str, Any]]:
-       """특정 날짜의 출입 기록을 조회합니다."""
-       # 날짜 지정이 없으면 오늘 날짜 사용
-       if not date:
-           date = datetime.now().strftime("%Y-%m-%d")
-       
-       # DB 연결 확인
-       if not self.db_helper:
-           logger.warning("DB 연결 없음 - 출입 기록 조회 불가")
-           return []
-       
-       try:
-           # DB에서 출입 기록 조회
-           logs = self.db_helper.get_access_logs(date, limit)
-           return logs
-       except Exception as e:
-           logger.error(f"출입 기록 조회 중 오류: {str(e)}")
-           return []
-   
-   # ==== 직원 정보 조회 ====
-   def get_employee_info(self, card_id: str) -> Dict[str, Any]:
-       """카드 ID로 직원 정보를 조회합니다."""
-       # DB 연결 확인
-       if not self.db_helper:
-           logger.warning("DB 연결 없음 - 직원 정보 조회 불가")
-           return {}
-       
-       try:
-           # DB에서 직원 정보 조회
-           employee = self.db_helper.get_employee_by_card(card_id)
-           
-           if not employee:
-               return {}
-           
-           return employee
-       except Exception as e:
-           logger.error(f"직원 정보 조회 중 오류: {str(e)}")
-           return {}
-   
-   # ==== 출입 경고 기록 ====
-   def log_access_warning(self, card_id: str, reason: str) -> bool:
-       """출입 경고 상황을 기록합니다."""
-       # DB 연결 확인
-       if not self.db_helper:
-           logger.warning("DB 연결 없음 - 출입 경고 기록 불가")
-           return False
-       
-       try:
-           # DB에 경고 기록 저장
-           self.db_helper.save_access_warning(card_id, reason)
-           logger.warning(f"출입 경고 기록: {card_id}, 사유: {reason}")
-           return True
-       except Exception as e:
-           logger.error(f"출입 경고 기록 중 오류: {str(e)}")
-           return False
-   
-   # ==== 출입 상태 초기화 ====
-   def reset_daily_status(self):
-       """일일 출입 상태를 초기화합니다."""
-       # 상태 캐시 초기화
-       self.last_access_state = {}
-       
-       # 미등록 시도 횟수 초기화
-       self.unregistered_attempts = {}
-       
-       logger.info("일일 출입 상태 초기화 완료")
+            return {
+                "access": True,
+                "entry_type": entry_type,
+                "employee_name": employee.get("name"),
+                "employee_id": employee.get("id"),
+                "department": employee.get("department")
+            }
+        
+        except Exception as e:
+            logger.error(f"출입 권한 확인 중 오류: {str(e)}")
+            return {
+                "access": False,
+                "reason": "system_error"
+            }
+    
+    # ==== 출입 기록 조회 ====
+    def get_access_logs(self, date: str = None, limit: int = 50) -> List[Dict[str, Any]]:
+        """특정 날짜의 출입 기록을 조회합니다."""
+        # 날짜 지정이 없으면 오늘 날짜 사용
+        if not date:
+            date = datetime.now().strftime("%Y-%m-%d")
+        
+        # DB 연결 확인
+        if not self.db_helper:
+            logger.warning("DB 연결 없음 - 출입 기록 조회 불가")
+            return []
+        
+        try:
+            # DB에서 출입 기록 조회
+            logs = self.db_helper.get_access_logs(date, limit)
+            return logs
+        except Exception as e:
+            logger.error(f"출입 기록 조회 중 오류: {str(e)}")
+            return []
+    
+    # ==== 직원 정보 조회 ====
+    def get_employee_info(self, card_id: str) -> Dict[str, Any]:
+        """카드 ID로 직원 정보를 조회합니다."""
+        # DB 연결 확인
+        if not self.db_helper:
+            logger.warning("DB 연결 없음 - 직원 정보 조회 불가")
+            return {}
+        
+        try:
+            # DB에서 직원 정보 조회
+            employee = self.db_helper.get_employee_by_card(card_id)
+            
+            if not employee:
+                return {}
+            
+            return employee
+        except Exception as e:
+            logger.error(f"직원 정보 조회 중 오류: {str(e)}")
+            return {}
+    
+    # ==== 출입 경고 기록 ====
+    def log_access_warning(self, card_id: str, reason: str) -> bool:
+        """출입 경고 상황을 기록합니다."""
+        # DB 연결 확인
+        if not self.db_helper:
+            logger.warning("DB 연결 없음 - 출입 경고 기록 불가")
+            return False
+        
+        try:
+            # DB에 경고 기록 저장
+            self.db_helper.save_access_warning(card_id, reason)
+            logger.warning(f"출입 경고 기록: {card_id}, 사유: {reason}")
+            return True
+        except Exception as e:
+            logger.error(f"출입 경고 기록 중 오류: {str(e)}")
+            return False
+    
+    # ==== 출입 상태 초기화 ====
+    def reset_daily_status(self):
+        """일일 출입 상태를 초기화합니다."""
+        # 상태 캐시 초기화
+        self.last_access_state = {}
+        
+        # 미등록 시도 횟수 초기화
+        self.unregistered_attempts = {}
+        
+        logger.info("일일 출입 상태 초기화 완료")

@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 from flask import Blueprint, jsonify, request
 
 # Blueprint 초기화
-router = Blueprint('expiry', __name__, url_prefix='/api/expiry')
+bp = Blueprint('expiry', __name__)
 
 # 컨트롤러 의존성
 def get_expiry_controller():
@@ -25,7 +25,7 @@ def get_expiry_controller():
             controllers = init_controllers()
             return controllers["expiry"]
 
-@router.route("/alerts", methods=["GET"])
+@bp.route("/alerts", methods=["GET"])
 def get_expiry_alerts():
     """유통기한 경고 목록 조회"""
     try:
@@ -48,7 +48,7 @@ def get_expiry_alerts():
             "timestamp": datetime.now().isoformat()
         }), 500
 
-@router.route("/expired", methods=["GET"])
+@bp.route("/expired", methods=["GET"])
 def get_expired_items():
     """유통기한 만료 물품 목록 조회"""
     try:

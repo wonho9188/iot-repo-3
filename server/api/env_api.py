@@ -1,9 +1,11 @@
 # server/api/env_api.py
-from flask import request, jsonify
-from . import api_bp, controller
+from flask import Blueprint, request, jsonify
+from api import controller
+# Blueprint 초기화 - 고유한 이름 부여
+bp = Blueprint('env_api', __name__)
 
 # ==== 환경 상태 조회 ====
-@api_bp.route('/environment/status', methods=['GET'])
+@bp.route('/environment/status', methods=['GET'])
 def get_environment_status():
     """현재 환경 상태를 조회합니다."""
     if not controller:
@@ -13,7 +15,7 @@ def get_environment_status():
     return jsonify(result)
 
 # ==== 창고별 상태 조회 ====
-@api_bp.route('/environment/warehouse/<warehouse>', methods=['GET'])
+@bp.route('/environment/warehouse/<warehouse>', methods=['GET'])
 def get_warehouse_status(warehouse):
     """특정 창고의 환경 상태를 조회합니다."""
     if not controller:
@@ -31,7 +33,7 @@ def get_warehouse_status(warehouse):
     return jsonify(result)
 
 # ==== 온도 설정 ====
-@api_bp.route('/environment/control', methods=['PUT'])
+@bp.route('/environment/control', methods=['PUT'])
 def set_environment_control():
     """창고 온도 제어 설정을 변경합니다."""
     if not controller:

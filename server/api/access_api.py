@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 from flask import Blueprint, jsonify, request
 
 # Blueprint 초기화
-router = Blueprint('access', __name__, url_prefix='/api/access')
+bp = Blueprint('access', __name__)
 
 # 컨트롤러 의존성
 def get_access_controller():
@@ -25,7 +25,7 @@ def get_access_controller():
             controllers = init_controllers()
             return controllers["access"]
 
-@router.route("/logs", methods=["GET"])
+@bp.route("/logs", methods=["GET"])
 def get_access_logs():
     """출입 기록 조회"""
     try:
@@ -43,7 +43,7 @@ def get_access_logs():
             "timestamp": datetime.now().isoformat()
         }), 500
 
-@router.route("/open-door", methods=["POST"])
+@bp.route("/open-door", methods=["POST"])
 def open_door():
     """출입문 열기"""
     try:
@@ -61,7 +61,7 @@ def open_door():
             "timestamp": datetime.now().isoformat()
         }), 500
 
-@router.route("/close-door", methods=["POST"])
+@bp.route("/close-door", methods=["POST"])
 def close_door():
     """출입문 닫기"""
     try:

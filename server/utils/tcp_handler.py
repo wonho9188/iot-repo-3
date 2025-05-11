@@ -8,40 +8,16 @@ from typing import Dict, Callable, Any, Optional, List
 
 logger = logging.getLogger(__name__)
 
-# TCP 핸들러 장치 ID 매핑 (필요한 경우)
-DEVICE_ID_MAPPING = {
-    'sr': 'sort_controller',
-    'hs_ab': 'env_controller_ab',
-    'hs_cd': 'env_controller_cd',
-    'gt': 'access_controller'
-}
-
-# tcp_handler.py에 메소드 추가
-def _process_message(self, device_id: str, message: dict):
-    """메시지를 적절한 핸들러로 전달합니다."""
-    try:
-        # 설정 파일 장치 ID 매핑 (필요한 경우)
-        mapped_id = DEVICE_ID_MAPPING.get(device_id, device_id)
-        
-        # 메시지 타입 확인
-        if 'tp' in message:
-            message_type = message['tp']
-            
-            # 디바이스별 핸들러 호출
-            if mapped_id in self.device_handlers and message_type in self.device_handlers[mapped_id]:
-                logger.debug(f"메시지 수신 ({device_id} -> {mapped_id}): {json.dumps(message)}")
-                self.device_handlers[mapped_id][message_type](message)
-            else:
-                logger.warning(f"핸들러 없음: 디바이스={mapped_id}, 타입={message_type}")
-        else:
-            logger.warning(f"메시지 타입이 없는 메시지: {json.dumps(message)}")
-    
-    except Exception as e:
-        logger.error(f"메시지 처리 중 오류: {str(e)}")
-
-
 # ==== TCP 소켓 통신을 관리하는 핸들러 클래스 ====
 class TCPHandler:
+    # TCP 핸들러 장치 ID 매핑 (필요한 경우)
+    DEVICE_ID_MAPPING = {
+        'sr': 'sort_controller',
+        'hs_ab': 'env_controller_ab',
+        'hs_cd': 'env_controller_cd',
+        'gt': 'access_controller'
+    }
+    
     # ==== TCP 핸들러 초기화 ====
     def __init__(self, host: str = '192.168.0.10', port: int = 9000):
         self.host = host
@@ -246,16 +222,19 @@ class TCPHandler:
     def _process_message(self, device_id: str, message: dict):
         """메시지를 적절한 핸들러로 전달합니다."""
         try:
+            # 설정 파일 장치 ID 매핑 (필요한 경우)
+            mapped_id = self.DEVICE_ID_MAPPING.get(device_id, device_id)
+            
             # 메시지 타입 확인
             if 'tp' in message:
                 message_type = message['tp']
                 
                 # 디바이스별 핸들러 호출
-                if device_id in self.device_handlers and message_type in self.device_handlers[device_id]:
-                    logger.debug(f"메시지 수신 ({device_id}): {json.dumps(message)}")
-                    self.device_handlers[device_id][message_type](message)
+                if mapped_id in self.device_handlers and message_type in self.device_handlers[mapped_id]:
+                    logger.debug(f"메시지 수신 ({device_id} -> {mapped_id}): {json.dumps(message)}")
+                    self.device_handlers[mapped_id][message_type](message)
                 else:
-                    logger.warning(f"핸들러 없음: 디바이스={device_id}, 타입={message_type}")
+                    logger.warning(f"핸들러 없음: 디바이스={mapped_id}, 타입={message_type}")
             else:
                 logger.warning(f"메시지 타입이 없는 메시지: {json.dumps(message)}")
         
