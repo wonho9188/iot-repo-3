@@ -16,6 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `abnormal_temperature_logs`
+--
+
+DROP TABLE IF EXISTS `abnormal_temperature_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `abnormal_temperature_logs` (
+  `log_id` int NOT NULL AUTO_INCREMENT,
+  `warehouse_id` varchar(10) DEFAULT NULL,
+  `temperature` decimal(5,2) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `recorded_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`log_id`),
+  KEY `warehouse_id` (`warehouse_id`),
+  CONSTRAINT `abnormal_temperature_logs_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`warehouse_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `abnormal_temperature_logs`
+--
+
+LOCK TABLES `abnormal_temperature_logs` WRITE;
+/*!40000 ALTER TABLE `abnormal_temperature_logs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `abnormal_temperature_logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `barcode_scan_log`
 --
 
@@ -183,6 +211,7 @@ CREATE TABLE `warehouse` (
 
 LOCK TABLES `warehouse` WRITE;
 /*!40000 ALTER TABLE `warehouse` DISABLE KEYS */;
+INSERT INTO `warehouse` VALUES ('A','냉동',-30,-18,NULL,NULL,16,6),('B','냉장',0,10,NULL,NULL,16,15),('C','상온',15,25,NULL,NULL,16,14),('D','비식품',15,25,NULL,NULL,16,4);
 /*!40000 ALTER TABLE `warehouse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,4 +251,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-10 15:02:39
+-- Dump completed on 2025-05-11 14:17:09
