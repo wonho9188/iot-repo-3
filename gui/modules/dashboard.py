@@ -1,17 +1,35 @@
 import sys
-from PyQt6.QtWidgets import *
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
-from PyQt6 import uic
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtCore import *
+from PySide6 import QtUiTools
 import numpy as np
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import koreanize_matplotlib
 
 class DashboardPage(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi("ui/widgets/dashboard.ui", self)
+        
+        # UI 파일 로드
+        loader = QtUiTools.QUiLoader()
+        ui_file = QFile("ui/widgets/dashboard.ui")
+        ui_file.open(QFile.ReadOnly)
+        self.ui = loader.load(ui_file, None)
+        ui_file.close()
+        
+        # 레이아웃 설정
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.ui)
+        layout.setContentsMargins(0, 0, 0, 0)
+        
+        # UI 요소 참조
+        self.datetime = self.ui.findChild(QLabel, "datetime")
+        self.total_status = self.ui.findChild(QLabel, "total_status")
+        self.input_monthly_graph = self.ui.findChild(QWidget, "input_monthly_graph")
+        self.output_monthly_graph = self.ui.findChild(QWidget, "output_monthly_graph")
+        
         self.setWindowTitle("물류 관리 시스템")        
 
         # 현재시간 표시 세팅
@@ -23,7 +41,7 @@ class DashboardPage(QWidget):
         output_total = 100
         alert_total = 5
         self.total_status.setText(f"입고 {input_total}건  |  출고 {output_total}건  |  경고 {alert_total}건")
-        self.total_status.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.total_status.setAlignment(Qt.AlignCenter)
 
         # 1초마다 현재시간, 입출고 현황 업데이트 되도록 연결
         self.timer = QTimer(self)
