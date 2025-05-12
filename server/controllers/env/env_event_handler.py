@@ -109,7 +109,7 @@ class EnvEventHandler:
                 if update_result:
                     updates.append(update_result)
                     
-                    # 알람 상태 업데이트만 유지 (팬 제어 호출 제거)
+                    # 알람 상태 업데이트
                     self._handle_alarm_status(warehouse, update_result["state"])
             
             except ValueError:

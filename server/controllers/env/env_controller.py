@@ -77,7 +77,7 @@ class EnvController:
         value = int(temperature)  # 정수로 변환 (소수점 버림)
         command = f"HCp{warehouse}{value}\n"
         
-        success = self.tcp_handler.send_message("H", command)
+        success = self.tcp_handler.send_message("env_controller", command)
         if not success:
             return {
                 "status": "error",

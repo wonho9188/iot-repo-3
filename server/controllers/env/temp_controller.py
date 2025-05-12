@@ -54,19 +54,9 @@ class TempController:
             logger.warning(f"유효하지 않은 팬 속도: {speed}")
             return False
         
-        # 명령 생성 - 바이너리 프로토콜 형식
-        # HCfA2\n - 하우스(H) 명령(C) 팬(f) A창고(A) 속도2(2)
-        command = f"HCf{warehouse}{speed}\n"
-        
-        # 명령 전송
-        success = self.tcp_handler.send_message("H", command)
-        
-        if success:
-            logger.debug(f"창고 {warehouse} 팬 설정 명령 전송 성공: 모드={mode}, 속도={speed}")
-        else:
-            logger.error(f"창고 {warehouse} 팬 설정 명령 전송 실패")
-        
-        return success
+        # 내부 상태만 업데이트 (명령 전송하지 않음)
+        logger.debug(f"창고 {warehouse} 팬 설정: 모드={mode}, 속도={speed}")
+        return True
     
     # ==== 알람 설정 ====
     def set_alarm(self, warehouse: str, state: str) -> bool:
@@ -87,21 +77,10 @@ class TempController:
             logger.debug(f"창고 {warehouse} 알람 상태: {state}")
             return True
         
-        # 명령 생성 - 바이너리 프로토콜 형식
-        # HCaA1\n - 하우스(H) 명령(C) 알람(a) A창고(A) 상태1-켜기(1) 또는 0-끄기(0)
-        command = f"HCa{warehouse}{1 if is_alarm_on else 0}\n"
-        
-        # 명령 전송
-        success = self.tcp_handler.send_message("H", command)
-        
-        if success:
-            # 상태 업데이트
-            self.alarm_status[warehouse] = is_alarm_on
-            logger.debug(f"창고 {warehouse} 알람 설정 명령 전송 성공: 상태={state}")
-        else:
-            logger.error(f"창고 {warehouse} 알람 설정 명령 전송 실패")
-        
-        return success
+        # 내부 상태만 업데이트 (명령 전송하지 않음)
+        self.alarm_status[warehouse] = is_alarm_on
+        logger.debug(f"창고 {warehouse} 알람 설정: 상태={state}")
+        return True
     
     # ==== 목표 온도 설정 ====
     def set_target_temperature(self, warehouse: str, temp: float) -> bool:
@@ -112,4 +91,15 @@ class TempController:
             
         # 내부 처리만 하는 메서드
         logger.debug(f"창고 {warehouse} 목표 온도 설정: {temp}°C")
+        return True
+        
+    # ==== 경고 상태 업데이트 ====
+    def update_warning(self, warehouse: str, is_warning: bool) -> bool:
+        """특정 창고의 경고 상태를 업데이트합니다."""
+        if warehouse not in self.warehouses:
+            logger.warning(f"알 수 없는 창고 ID: {warehouse}")
+            return False
+            
+        # 내부 상태만 업데이트 (명령 전송하지 않음)
+        logger.debug(f"창고 {warehouse} 경고 상태 업데이트: {is_warning}")
         return True
