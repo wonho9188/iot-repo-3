@@ -35,15 +35,14 @@ class EnvController:
     # ==== TCP 핸들러에 이벤트 리스너 등록 ====
     def _register_tcp_handlers(self):
         """TCP 핸들러에 콜백 함수를 등록합니다."""
-        # AB창고 컨트롤러(hs_ab)의 이벤트 핸들러 등록
-        self.tcp_handler.register_device_handler("hs_ab", "evt", self.event_handler.handle_event)
-        
-        # CD창고 컨트롤러(hs_cd)의 이벤트 핸들러 등록
-        self.tcp_handler.register_device_handler("hs_cd", "evt", self.event_handler.handle_event)
+        # 환경 제어 컨트롤러(H)의 이벤트 핸들러 등록
+        self.tcp_handler.register_device_handler("env_controller", "evt", self.event_handler.handle_event)
         
         # 응답(res) 타입 핸들러
-        self.tcp_handler.register_device_handler("hs_ab", "res", self.event_handler.handle_response)
-        self.tcp_handler.register_device_handler("hs_cd", "res", self.event_handler.handle_response)
+        self.tcp_handler.register_device_handler("env_controller", "res", self.event_handler.handle_response)
+        
+        # 오류(err) 타입 핸들러
+        self.tcp_handler.register_device_handler("env_controller", "err", self.event_handler.handle_error)
         
         logger.debug("TCP 핸들러에 이벤트 리스너 등록 완료")
     
@@ -53,53 +52,51 @@ class EnvController:
         return self.status_manager.update_temperature(warehouse, temp)
     
     # ==== 목표 온도 설정 ====
-    def set_target_temperature(self, warehouse: str, temp: float) -> Dict[str, Any]:
+    def set_target_temperature(self, warehouse: str, temperature: float) -> dict:
         """특정 창고의 목표 온도를 설정합니다."""
-        # 유효성 검사
-        if warehouse not in ["A", "B", "C", "D"]:
+        if warehouse not in self.temp_controller.warehouses:
             return {
                 "status": "error",
                 "code": "E4001",
-                "message": f"알 수 없는 창고 ID: {warehouse}"
+                "message": f"존재하지 않는 창고: {warehouse}",
+                "auto_dismiss": 1000
             }
         
-        # 목표 온도 설정
-        result = self.status_manager.set_target_temperature(warehouse, temp)
-        
-        if not result:
+        # 유효 범위 확인
+        min_temp, max_temp = self.temp_controller.get_temperature_range(warehouse)
+        if temperature < min_temp or temperature > max_temp:
             return {
                 "status": "error",
                 "code": "E4002",
-                "message": "목표 온도 설정 실패"
+                "message": f"유효하지 않은 온도 값: {temperature}. 범위는 {min_temp}~{max_temp}입니다.",
+                "auto_dismiss": 1000
             }
         
-        # 팬 제어 설정 시도
-        fan_mode = result.get("fan_mode")
-        fan_speed = result.get("fan_speed")
+        # 온도 설정 명령 전송
+        # HCpA-20\n - 하우스(H) 명령(C) 온도설정(p) A창고(A) -20도(-20)
+        value = int(temperature)  # 정수로 변환 (소수점 버림)
+        command = f"HCp{warehouse}{value}\n"
         
-        if fan_mode and fan_speed is not None:
-            success = self.temp_controller.set_fan(warehouse, fan_mode, fan_speed)
-            
-            if not success:
-                logger.warning(f"창고 {warehouse} 팬 제어 실패")
+        success = self.tcp_handler.send_message("H", command)
+        if not success:
+            return {
+                "status": "error",
+                "code": "E4003",
+                "message": "환경 제어 통신 오류",
+                "auto_dismiss": 1000
+            }
+        
+        # 내부 상태 업데이트
+        self.temp_controller.set_target_temperature(warehouse, temperature)
         
         # 상태 업데이트 이벤트 발송
         self._update_status()
         
-        # DB에 설정 저장 (있는 경우)
-        if self.db_helper:
-            try:
-                self.db_helper.save_temp_setting(warehouse, temp)
-            except Exception as e:
-                logger.error(f"목표 온도 설정 DB 저장 중 오류: {str(e)}")
-        
-        # 응답 구성
         return {
             "status": "ok",
             "warehouse": warehouse,
-            "target_temp": temp,
-            "fan_mode": result.get("fan_mode"),
-            "fan_speed": result.get("fan_speed")
+            "target_temperature": temperature,
+            "message": f"{warehouse} 창고 목표 온도를 {temperature}도로 설정했습니다."
         }
     
     # ==== 현재 환경 상태 반환 ====
@@ -123,7 +120,7 @@ class EnvController:
     # ==== 특정 창고의 환경 상태 반환 ====
     def get_warehouse_status(self, warehouse: str) -> Dict[str, Any]:
         """특정 창고의 환경 상태를 반환합니다."""
-        if warehouse not in ["A", "B", "C", "D"]:
+        if warehouse not in ["A", "B", "C"]:
             return {
                 "status": "error",
                 "code": "E4001",

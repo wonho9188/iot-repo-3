@@ -43,7 +43,7 @@ def get_environment_status():
 def get_warehouse_status(warehouse):
     """특정 창고의 환경 상태를 조회합니다."""
     # 창고 ID 검증
-    if warehouse not in ['A', 'B', 'C', 'D']:
+    if warehouse not in ['A', 'B', 'C']:
         return jsonify({"status": "error", "message": "유효하지 않은 창고 ID"}), 400
     
     env_controller = get_env_controller()
@@ -71,7 +71,7 @@ def set_environment_control():
     target_temp = data['target_temp']
     
     # 창고 ID 검증
-    if warehouse not in ['A', 'B', 'C', 'D']:
+    if warehouse not in ['A', 'B', 'C']:
         return jsonify({"status": "error", "message": "유효하지 않은 창고 ID"}), 400
     
     # 온도 유효성 검증

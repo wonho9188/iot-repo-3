@@ -63,10 +63,10 @@ class MultiTCPHandler:
             logger.error(f"등록되지 않은 디바이스 ID: {device_id}")
     
     # ==== 메시지 전송 ====
-    def send_message(self, device_id: str, message: Dict[str, Any]) -> bool:
-        """지정된 디바이스에 메시지를 전송합니다."""
+    def send_message(self, device_id: str, command: str) -> bool:
+        """지정된 디바이스에 명령 메시지를 전송합니다."""
         if device_id in self.handlers:
-            return self.handlers[device_id].send_message(device_id, message)
+            return self.handlers[device_id].send_message(device_id, command)
         else:
             logger.error(f"등록되지 않은 디바이스 ID: {device_id}")
             return False

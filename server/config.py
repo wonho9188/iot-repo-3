@@ -33,8 +33,7 @@ DB_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}
 TCP_PORT = int(os.getenv("TCP_PORT", "9000"))
 HARDWARE_IP = {
     'sort_controller': os.getenv("SORT_CONTROLLER_IP", '192.168.0.101'),
-    'env_controller_ab': os.getenv("ENV_AB_CONTROLLER_IP", '192.168.0.102'),
-    'env_controller_cd': os.getenv("ENV_CD_CONTROLLER_IP", '192.168.0.103'),
+    'env_controller': os.getenv("ENV_CONTROLLER_IP", '192.168.0.102'),
     'access_controller': os.getenv("ACCESS_CONTROLLER_IP", '192.168.0.104')
 }
 
@@ -42,8 +41,7 @@ HARDWARE_IP = {
 MULTI_PORT_MODE = os.getenv("MULTI_PORT_MODE", "False").lower() == "true"
 TCP_PORTS = {
     'sort_controller': int(os.getenv("SORT_CONTROLLER_PORT", "9001")),
-    'env_controller_ab': int(os.getenv("ENV_AB_CONTROLLER_PORT", "9002")),
-    'env_controller_cd': int(os.getenv("ENV_CD_CONTROLLER_PORT", "9003")),
+    'env_controller': int(os.getenv("ENV_CONTROLLER_PORT", "9002")),
     'access_controller': int(os.getenv("ACCESS_CONTROLLER_PORT", "9004"))
 }
 
@@ -60,9 +58,7 @@ WAREHOUSES = {
     # B: 냉장 식품 창고 (0°C ~ 10°C)
     "B": {"type": "refrigerator", "temp_min": 0, "temp_max": 10},
     # C: 상온 식품 창고 (15°C ~ 25°C)
-    "C": {"type": "room_temp", "temp_min": 15, "temp_max": 25},
-    # D: 비식품 창고 (15°C ~ 25°C)
-    "D": {"type": "ambient", "temp_min": 15, "temp_max": 25}
+    "C": {"type": "room_temp", "temp_min": 15, "temp_max": 25}
 }
 
 # ===== 로깅 설정 =====

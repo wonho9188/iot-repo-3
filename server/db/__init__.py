@@ -24,8 +24,7 @@ except ImportError as e:
             shelves = {
                 'A': ['A01', 'A02', 'A03', 'A04'],
                 'B': ['B01', 'B02', 'B03', 'B04'],
-                'C': ['C01', 'C02', 'C03', 'C04'],
-                'D': ['D01', 'D02', 'D03', 'D04']
+                'C': ['C01', 'C02', 'C03', 'C04']
             }
             return shelves.get(warehouse, [])
     

@@ -12,6 +12,12 @@ from controllers.system_controller import get_system_status
 from controllers.sort.sort_controller import SortController
 from utils.tcp_handler import TCPHandler
 from api import set_controller, register_controller  # 컨트롤러 관리 함수 임포트
+# main.py 상단에 추가
+try:
+    from utils.tcp_debug_helper import *
+    print("디버깅 모드가 활성화되었습니다.")
+except ImportError as e:
+    pass  # 디버그 헬퍼가 없으면 무시\
 
 # logger 초기화 전에 로그 디렉토리 확인
 import os
@@ -71,10 +77,11 @@ def init_controllers():
     # controllers["inventory"] = inventory_controller
     # register_controller("inventory", inventory_controller)
     
-    # TODO: 환경 컨트롤러 초기화
-    # env_controller = EnvironmentController(tcp_handler)
-    # controllers["environment"] = env_controller
-    # register_controller("environment", env_controller)
+    # 환경 컨트롤러 초기화
+    from controllers.env.env_controller import EnvController
+    env_controller = EnvController(tcp_handler, socketio, db_manager)
+    controllers["environment"] = env_controller
+    register_controller("environment", env_controller)
     
     # TODO: 출입 컨트롤러 초기화
     # access_controller = AccessController(tcp_handler)

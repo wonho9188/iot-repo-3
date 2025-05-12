@@ -1,7 +1,6 @@
 # server/utils/tcp_handler.py
 import socket
 import threading
-import json
 import logging
 import time
 from typing import Dict, Callable, Any, Optional, List
@@ -12,10 +11,9 @@ logger = logging.getLogger(__name__)
 class TCPHandler:
     # TCP 핸들러 장치 ID 매핑 (필요한 경우)
     DEVICE_ID_MAPPING = {
-        'sr': 'sort_controller',
-        'hs_ab': 'env_controller_ab',
-        'hs_cd': 'env_controller_cd',
-        'gt': 'access_controller'
+        'S': 'sort_controller',  # 분류기 - 첫 문자가 S인 메시지
+        'H': 'env_controller',   # 환경 제어 - 첫 문자가 H인 메시지
+        'G': 'access_controller' # 출입 제어 - 첫 문자가 G인 메시지
     }
     
     # ==== TCP 핸들러 초기화 ====
@@ -38,7 +36,8 @@ class TCPHandler:
         self.health_check_thread = None
         
         logger.info("TCP 핸들러 초기화 완료")
-    
+
+        
     # ==== 서버 시작 ====
     def start(self):
         if self.running:
@@ -193,57 +192,67 @@ class TCPHandler:
         # 메시지 처리
         for message in messages:
             try:
-                # 메시지 디코딩 및 파싱
+                # 메시지 디코딩
                 decoded_message = message.decode('utf-8')
-                message_data = json.loads(decoded_message)
                 
-                # 디바이스 ID 확인
-                if 'dev' in message_data:
-                    device_id = message_data['dev']
-                    
-                    # 클라이언트-디바이스 매핑 업데이트
-                    with self.client_lock:
-                        if client_id in self.clients:
-                            if self.clients[client_id]['device_id'] is None:
-                                self.clients[client_id]['device_id'] = device_id
-                                logger.info(f"디바이스 등록: {device_id} (클라이언트: {client_id})")
-                    
-                    # 메시지 처리
-                    self._process_message(device_id, message_data)
+                # 첫 번째 문자는 디바이스 식별자(S, H, G), 두 번째 문자는 메시지 타입(E, C, R, X)
+                if len(decoded_message) < 2:
+                    logger.warning(f"잘못된 메시지 형식(길이 부족): {decoded_message}")
+                    continue
+                
+                device_type = decoded_message[0]  # 디바이스 타입(S, H, G)
+                message_type = decoded_message[1]  # 메시지 타입(E=이벤트, C=명령, R=응답, X=오류)
+                message_content = decoded_message[2:]  # 메시지 내용
+                
+                # 디바이스 ID 매핑
+                mapped_device_id = self.DEVICE_ID_MAPPING.get(device_type, device_type)
+                
+                # 클라이언트-디바이스 매핑 업데이트
+                with self.client_lock:
+                    if client_id in self.clients:
+                        if self.clients[client_id]['device_id'] is None:
+                            self.clients[client_id]['device_id'] = device_type
+                            logger.info(f"디바이스 등록: {device_type} (클라이언트: {client_id})")
+                
+                # 메시지 타입 매핑
+                if message_type == 'E':  # 이벤트
+                    handler_type = 'evt'
+                elif message_type == 'R':  # 응답
+                    handler_type = 'res'
+                elif message_type == 'X':  # 오류
+                    handler_type = 'err'
                 else:
-                    logger.warning(f"디바이스 ID가 없는 메시지: {decoded_message}")
+                    handler_type = message_type  # 그 외 타입은 그대로 사용
+                
+                # 메시지 처리
+                self._process_message(mapped_device_id, handler_type, device_type, message_content)
             
-            except json.JSONDecodeError:
-                logger.error(f"잘못된 JSON 형식: {message}")
             except Exception as e:
                 logger.error(f"메시지 처리 오류: {str(e)}")
     
     # ==== 메시지 처리 ====
-    def _process_message(self, device_id: str, message: dict):
+    def _process_message(self, device_id: str, message_type: str, raw_device_id: str, content: str):
         """메시지를 적절한 핸들러로 전달합니다."""
         try:
-            # 설정 파일 장치 ID 매핑 (필요한 경우)
-            mapped_id = self.DEVICE_ID_MAPPING.get(device_id, device_id)
-            
-            # 메시지 타입 확인
-            if 'tp' in message:
-                message_type = message['tp']
+            # 디바이스별 핸들러 호출
+            if device_id in self.device_handlers and message_type in self.device_handlers[device_id]:
+                logger.debug(f"메시지 수신 ({raw_device_id}): {content}")
                 
-                # 디바이스별 핸들러 호출
-                if mapped_id in self.device_handlers and message_type in self.device_handlers[mapped_id]:
-                    logger.debug(f"메시지 수신 ({device_id} -> {mapped_id}): {json.dumps(message)}")
-                    self.device_handlers[mapped_id][message_type](message)
-                else:
-                    logger.warning(f"핸들러 없음: 디바이스={mapped_id}, 타입={message_type}")
+                # 메시지 파싱 및 핸들러 호출
+                self.device_handlers[device_id][message_type]({
+                    'device_type': raw_device_id,
+                    'message_type': message_type,
+                    'content': content
+                })
             else:
-                logger.warning(f"메시지 타입이 없는 메시지: {json.dumps(message)}")
+                logger.warning(f"핸들러 없음: 디바이스={device_id}, 타입={message_type}")
         
         except Exception as e:
             logger.error(f"메시지 처리 중 오류: {str(e)}")
     
     # ==== 메시지 전송 ====
-    def send_message(self, device_id: str, message: dict) -> bool:
-        """지정된 디바이스에 메시지를 전송합니다."""
+    def send_message(self, device_id: str, command: str) -> bool:
+        """지정된 디바이스에 커맨드 메시지를 전송합니다."""
         # 디바이스 ID에 해당하는 클라이언트 찾기
         client_id = self._find_client_by_device(device_id)
         
@@ -258,16 +267,16 @@ class TCPHandler:
                 
                 client_socket = self.clients[client_id]['socket']
                 
-                # 메시지 직렬화 (개행 문자 추가)
-                message_str = json.dumps(message) + '\n'
+                # 명령어에 개행 문자 추가
+                command_str = command + '\n'
                 
                 # 전송
-                client_socket.sendall(message_str.encode('utf-8'))
+                client_socket.sendall(command_str.encode('utf-8'))
                 
                 # 활동 시간 업데이트
                 self.clients[client_id]['last_activity'] = time.time()
                 
-                logger.debug(f"메시지 전송 ({device_id}): {json.dumps(message)}")
+                logger.debug(f"메시지 전송 ({device_id}): {command}")
                 return True
         
         except Exception as e:
@@ -332,13 +341,14 @@ class TCPHandler:
     
     # ==== 비활성 클라이언트 정리 ====
     def _cleanup_inactive_clients(self, timeout: int = 300):
-        """일정 시간 동안 활동이 없는 클라이언트를 제거합니다."""
+        """지정 시간 동안 활동이 없는 클라이언트를 제거합니다."""
         current_time = time.time()
         inactive_clients = []
         
+        # 비활성 클라이언트 식별
         with self.client_lock:
             for client_id, client_info in self.clients.items():
-                last_activity = client_info.get('last_activity', 0)
+                last_activity = client_info['last_activity']
                 if current_time - last_activity > timeout:
                     inactive_clients.append(client_id)
         
@@ -347,20 +357,20 @@ class TCPHandler:
             logger.info(f"비활성 클라이언트 제거: {client_id}")
             self._remove_client(client_id)
     
-    # ==== 연결된 디바이스 목록 ====
+    # ==== 연결된 디바이스 목록 반환 ====
     def get_connected_devices(self) -> List[str]:
-        """현재 연결된 모든 디바이스 ID 목록을 반환합니다."""
-        devices = []
+        """현재 연결된 디바이스 ID 목록을 반환합니다."""
+        connected_devices = []
         
         with self.client_lock:
             for client_info in self.clients.values():
                 device_id = client_info.get('device_id')
-                if device_id and device_id not in devices:
-                    devices.append(device_id)
+                if device_id:
+                    connected_devices.append(device_id)
         
-        return devices
+        return connected_devices
     
-    # ==== 디바이스 연결 확인 ====
+    # ==== 디바이스 연결 상태 확인 ====
     def is_device_connected(self, device_id: str) -> bool:
-        """특정 디바이스가 연결되어 있는지 확인합니다."""
+        """특정 디바이스의 연결 상태를 확인합니다."""
         return self._find_client_by_device(device_id) is not None

@@ -1,5 +1,3 @@
-# server/controllers/sort_event_handler.py
-import json
 import logging
 import threading
 import time
@@ -26,38 +24,29 @@ class SortEventHandler:
             "1": "A",  # 냉동
             "2": "B",  # 냉장
             "3": "C",  # 상온
-            "4": "D",  # 비식품
             "0": "E"   # 오류물품
         }
-    
     # ==== 이벤트 메시지 처리 ====
     def handle_event(self, message: dict):
         try:
-            if 'evt' not in message or 'val' not in message:
-                logger.warning(f"잘못된 이벤트 메시지 형식: {json.dumps(message)}")
-                return
+            # 메시지 콘텐츠 확인
+            content = message.get('content', '')
             
-            event_type = message['evt']
-            values = message['val']
-            
-            # 이벤트 타입별 처리
-            if event_type == "bc":
+            # 이벤트 타입별 처리 (ir, bc, ss, as 등)
+            if content.startswith('ir'):
+                # IR 센서 이벤트
+                self._handle_ir_sensor_event(content)
+            elif content.startswith('bc'):
                 # 바코드 인식 이벤트
-                self._handle_barcode_event(values)
-            elif event_type == "ir":
-                # IR 센서 감지 이벤트
-                self._handle_ir_sensor_event(values)
-            elif event_type == "auto":
+                self._handle_barcode_event(content)
+            elif content.startswith('ss'):
+                # 분류 완료 이벤트
+                self._handle_sort_complete_event(content)
+            elif content.startswith('as'):
                 # 자동 정지 이벤트
-                self._handle_auto_stop_event(values)
-            elif event_type == "emb":
-                # 비상 정지 버튼 이벤트
-                self._handle_emergency_button_event(values)
-            elif event_type == "bcerr":
-                # 바코드 인식 오류
-                self._handle_barcode_error_event(values)
+                self._handle_auto_stop_event(content)
             else:
-                logger.warning(f"알 수 없는 이벤트 타입: {event_type}")
+                logger.warning(f"알 수 없는 이벤트 콘텐츠: {content}")
         
         except Exception as e:
             logger.error(f"분류기 이벤트 처리 중 오류: {str(e)}")
@@ -65,60 +54,108 @@ class SortEventHandler:
     # ==== 응답 메시지 처리 ====
     def handle_response(self, message: dict):
         try:
-            if 'res' not in message:
-                logger.warning(f"잘못된 응답 메시지 형식: {json.dumps(message)}")
-                return
-            
-            response_type = message['res']
-            values = message.get('val', {})
+            # 응답 콘텐츠 확인
+            content = message.get('content', '')
             
             # 응답 타입별 처리
-            if response_type == "ok":
-                # 성공 응답 처리
-                self._handle_ok_response(values)
-            elif response_type == "err":
-                # 오류 응답 처리
-                self._handle_error_response(values)
+            if content.startswith('ok'):
+                # 성공 응답
+                self._handle_ok_response(content)
             else:
-                logger.warning(f"알 수 없는 응답 타입: {response_type}")
+                logger.warning(f"알 수 없는 응답 콘텐츠: {content}")
         
         except Exception as e:
             logger.error(f"분류기 응답 처리 중 오류: {str(e)}")
     
-    # ==== 바코드 인식 이벤트 처리 ====
-    def _handle_barcode_event(self, values: dict):
-        if 'c' not in values:
-            logger.warning("바코드 값이 없는 바코드 이벤트")
-            return
+    # ==== 오류 메시지 처리 ====
+    def handle_error(self, message: dict):
+        try:
+            # 오류 콘텐츠 확인
+            content = message.get('content', '')
+            
+            # 오류 코드 추출
+            error_code = content[1:] if len(content) > 1 else "unknown"
+            
+            logger.warning(f"분류기 오류: {error_code}")
+            
+            # 오류 이벤트 발송
+            self.controller._emit_socketio_event("sorter_error", {
+                "error_code": error_code,
+                "error_message": f"분류기 오류: {error_code}"
+            })
         
-        barcode = values['c']
-        logger.info(f"바코드 인식: {barcode}")
+        except Exception as e:
+            logger.error(f"분류기 오류 처리 중 오류: {str(e)}")
+    
+    # ==== IR 센서 이벤트 처리 ====
+    def _handle_ir_sensor_event(self, content: str):
+        """IR 센서 감지 이벤트를 처리합니다."""
+        # 값 추출 (ir1 - 1=감지됨)
+        try:
+            detected = int(content[2:]) if len(content) > 2 else 0
+            
+            if detected == 1:
+                logger.info("입구 IR 센서 물품 감지")
+                
+                # 분류기 상태가 정지 상태인 경우 작동 시작
+                if self.controller.status_manager.state == "stopped":
+                    # 상태 업데이트
+                    self.controller.status_manager.state = "running"
+                    self.controller.status_manager.motor_active = True
+                    
+                    # 상태 업데이트 이벤트 발송
+                    self.controller._update_status()
+                
+                # 대기 물품 수 증가
+                self.controller.status_manager.items_waiting += 1
+                
+                # 상태 업데이트 이벤트 발송
+                self.controller._update_status()
+                
+                # 자동 정지 타이머 초기화
+                self.reset_auto_stop_timer()
+        except ValueError:
+            logger.error(f"IR 센서 값 파싱 오류: {content}")
+    
+    # ==== 바코드 인식 이벤트 처리 ====
+    def _handle_barcode_event(self, content: str):
+        """바코드 인식 이벤트를 처리합니다."""
+        # 값 추출 (bcA12123456 - A=구역, 12=물품번호, 123456=유통기한)
+        if len(content) < 4:  # 최소 'bcA'
+            logger.warning(f"잘못된 바코드 형식: {content}")
+            return
         
         # 처리 중인 바코드가 없는지 확인 (중복 방지)
         if self.processing_barcode:
-            logger.warning(f"이미 처리 중인 바코드가 있음: {barcode}")
+            logger.warning(f"이미 처리 중인 바코드가 있음: {content}")
             return
         
         self.processing_barcode = True
         
         try:
-            # 바코드 파싱 (형식: 분류(1자리) + 물품번호(3자리) + 판매자(2자리) + 유통기한(6자리, YYMMDD))
-            if len(barcode) < 12:
-                logger.error(f"잘못된 바코드 형식: {barcode}")
+            # 바코드 데이터 추출
+            barcode_data = content[2:]  # 'bc' 이후 데이터
+            
+            # 바코드 형식: 구역(1자리) + 물품번호(2자리) + 유통기한(6자리)
+            if len(barcode_data) < 9:  # 9자리(1+2+6) 미만이면 오류
+                logger.error(f"잘못된 바코드 데이터 형식: {barcode_data}")
                 # 오류물품(E) 분류 명령 전송
                 self._send_sort_command("E")
                 return
-                
-            category_code = barcode[0]
-            item_code = barcode[1:4]
-            vendor_code = barcode[4:6]
-            expiry_date = f"20{barcode[6:8]}-{barcode[8:10]}-{barcode[10:12]}"
             
-            # 분류 카테고리 결정
-            if category_code in self.category_map:
-                warehouse = self.category_map[category_code]
-            else:
-                warehouse = "E"  # 알 수 없는 카테고리는 오류물품으로 분류
+            # 바코드 파싱
+            category = barcode_data[0]  # 구역 (A, B, C 등)
+            item_code = barcode_data[1:3]  # 물품번호
+            expiry_date = barcode_data[3:9]  # 유통기한 (YYMMDD)
+            
+            # 유통기한 형식 변환 (YYMMDD -> YYYY-MM-DD)
+            year = f"20{expiry_date[0:2]}"
+            month = expiry_date[2:4]
+            day = expiry_date[4:6]
+            formatted_date = f"{year}-{month}-{day}"
+            
+            # 구역 결정 (인식된 구역 그대로 사용)
+            warehouse = category
             
             # 선반 할당
             shelf = None
@@ -130,24 +167,22 @@ class SortEventHandler:
             
             # 항목 정보 생성
             item_info = {
-                "barcode": barcode,
+                "barcode": barcode_data,
                 "category": warehouse,
                 "item_code": item_code,
-                "vendor_code": vendor_code,
-                "expiry_date": expiry_date,
+                "expiry_date": formatted_date,
                 "shelf": shelf
             }
             
             # DB에 물품 정보 저장
-            self.shelf_manager.save_item(item_info)
+            if shelf:
+                self.shelf_manager.save_item(item_info)
             
             # 웹소켓 이벤트 발송
             self.controller._emit_socketio_event("barcode_scanned", item_info)
             
             # 로그에 분류 정보 추가
-            self.controller.sort_logs.append(item_info)
-            if len(self.controller.sort_logs) > 10:
-                self.controller.sort_logs.pop(0)  # 최근 10개만 유지
+            self.controller.add_sort_log(item_info)
             
             # 자동 정지 타이머 초기화 (물품이 인식되었으므로)
             self.reset_auto_stop_timer()
@@ -160,163 +195,70 @@ class SortEventHandler:
         finally:
             self.processing_barcode = False
     
-    # ==== IR 센서 감지 이벤트 처리 ====
-    def _handle_ir_sensor_event(self, values: dict):
-        if 'sn' not in values or 'v' not in values:
-            logger.warning("센서 정보가 없는 IR 센서 이벤트")
+    # ==== 분류 완료 이벤트 처리 ====
+    def _handle_sort_complete_event(self, content: str):
+        """분류 완료 이벤트를 처리합니다."""
+        if len(content) < 3:  # 최소 'ssA'
+            logger.warning(f"잘못된 분류 완료 형식: {content}")
             return
         
-        sensor = values['sn']
-        value = values['v']
+        # 구역 추출 (마지막 문자)
+        zone = content[2]
+        logger.info(f"분류 완료: {zone} 구역")
         
-        logger.debug(f"IR 센서 감지: {sensor}, 값: {value}")
+        # 대기 물품 수 감소
+        if self.controller.status_manager.items_waiting > 0:
+            self.controller.status_manager.items_waiting -= 1
         
-        # 입구 센서 처리
-        if sensor == "entry" and value == 1:
-            self.controller.items_waiting += 1
-            self.controller._update_status()
+        # 처리 물품 수 증가
+        self.controller.status_manager.items_processed += 1
         
-        # 분류대 센서 처리 (분류 영역 A, B, C, D, E)
-        elif sensor in ["A", "B", "C", "D", "E"] and value == 1:
-            # 대기 물품 감소
-            if self.controller.items_waiting > 0:
-                self.controller.items_waiting -= 1
-            
-            # 처리 물품 증가
-            self.controller.items_processed += 1
-            
-            # 분류대별 카운터 증가
-            self.controller.sorted_items[sensor] += 1
-            
-            # 상태 업데이트
-            self.controller._update_status()
-            
-            # 해당 창고 물품 카운트 증가 (웹소켓 이벤트로)
-            self.controller._emit_socketio_event("item_sorted", {
-                "warehouse": sensor,
-                "items_waiting": self.controller.items_waiting,
-                "items_processed": self.controller.items_processed,
-                "sorted_items": self.controller.sorted_items
-            })
+        # 구역별 카운트 증가
+        if zone in self.controller.status_manager.sort_counts:
+            self.controller.status_manager.sort_counts[zone] += 1
+        
+        # 상태 업데이트 이벤트 발송
+        self.controller._update_status()
+        
+        # 대기 물품이 없으면 자동 정지 타이머 시작/갱신
+        if self.controller.status_manager.items_waiting == 0:
+            self.reset_auto_stop_timer()
     
-    # ==== 자동 정지 이벤트 처리 ====
-    def _handle_auto_stop_event(self, values: dict):
-        from .sort_controller import SortStatus  # 순환 참조 방지
+       # ==== 자동 정지 이벤트 처리 ====
+    def _handle_auto_stop_event(self, content: str):
+        """자동 정지 이벤트를 처리합니다."""
+        logger.info("분류기 자동 정지 발생")
         
-        reason = values.get('r', 'unknown')
-        logger.info(f"자동 정지 이벤트: {reason}")
+        # 상태 업데이트
+        self.controller.status_manager.state = "stopped"
+        self.controller.status_manager.motor_active = False
         
-        # 분류기 상태 변경
-        self.controller.status = SortStatus.STOPPED.value
-        self.controller.motor_active = False
-        
-        # 자동 정지 타이머 취소 (이미 정지됨)
+        # 자동 정지 타이머 취소
         self.cancel_auto_stop_timer()
         
-        # 웹소켓 이벤트 발송
+        # 상태 업데이트 이벤트 발송
+        self.controller._update_status()
+        
+        # Socket.IO 이벤트 발송
         self.controller._emit_socketio_event("auto_stopped", {
-            "reason": reason,
-            "status": self.controller.status
-        })
-        
-        # 상태 업데이트
-        self.controller._update_status()
-    
-    # ==== 비상 정지 버튼 이벤트 처리 ====
-    def _handle_emergency_button_event(self, values: dict):
-        from .sort_controller import SortStatus  # 순환 참조 방지
-        
-        state = values.get('s', 0)
-        logger.info(f"비상 정지 버튼 상태: {state}")
-        
-        # 물리적 비상 정지 상태 업데이트
-        self.controller.physical_emergency = (state == 1)
-        
-        if self.controller.physical_emergency:
-            # 비상 정지 상태로 변경
-            self.controller.status = SortStatus.EMERGENCY_STOP.value
-            self.controller.motor_active = False
-            
-            # 자동 정지 타이머 취소 (비상 정지됨)
-            self.cancel_auto_stop_timer()
-            
-            # 웹소켓 이벤트 발송
-            self.controller._emit_socketio_event("emergency_stop", {
-                "physical_button": True,
-                "status": self.controller.status
-            })
-        
-        # 상태 업데이트
-        self.controller._update_status()
-    
-    # ==== 바코드 인식 오류 이벤트 처리 ====
-    def _handle_barcode_error_event(self, values: dict):
-        error_code = values.get('c', 'unknown')
-        logger.warning(f"바코드 인식 오류: {error_code}")
-        
-        # 오류물품(E) 분류 명령 전송
-        self._send_sort_command("E")
-        
-        # 웹소켓 이벤트 발송
-        self.controller._emit_socketio_event("barcode_error", {
-            "error_code": error_code
+            "reason": "no_items_timeout",
+            "status": self.controller.status_manager.state
         })
     
     # ==== 성공 응답 처리 ====
-    def _handle_ok_response(self, values: dict):
-        from .sort_controller import SortStatus  # 순환 참조 방지
-        
-        # 물리적 비상정지, 모터 상태, 상태 정보 처리
-        if 'pe' in values:
-            self.controller.physical_emergency = (values['pe'] == 1)
-        
-        if 'ma' in values:
-            self.controller.motor_active = (values['ma'] == 1)
-        
-        if 'st' in values:
-            received_status = values['st']
-            
-            # 상태 매핑
-            if received_status == "run":
-                new_status = SortStatus.RUNNING.value
-            elif received_status == "stop":
-                new_status = SortStatus.STOPPED.value
-            elif received_status == "err":
-                new_status = SortStatus.EMERGENCY_STOP.value
-            else:
-                new_status = self.controller.status  # 알 수 없는 상태는 변경하지 않음
-            
-            # 상태가 변경된 경우 업데이트
-            if new_status != self.controller.status:
-                self.controller.status = new_status
-                self.controller._update_status()
-    
-    # ==== 오류 응답 처리 ====
-    def _handle_error_response(self, values: dict):
-        error_code = values.get('c', 'unknown')
-        error_message = values.get('m', '알 수 없는 오류')
-        
-        logger.error(f"분류기 오류 응답: {error_code}, {error_message}")
-        
-        # 웹소켓 이벤트 발송
-        self.controller._emit_socketio_event("sorter_error", {
-            "error_code": error_code,
-            "error_message": error_message
-        })
+    def _handle_ok_response(self, content: str):
+        """성공 응답을 처리합니다."""
+        # 성공 응답은 단순히 로그만 기록
+        logger.debug(f"분류기 성공 응답: {content}")
     
     # ==== 분류 명령 전송 ====
     def _send_sort_command(self, zone: str):
-        command = {
-            "dev": "sr",
-            "tp": "cmd",
-            "cmd": "srv",
-            "act": "sort",
-            "val": {
-                "z": zone
-            }
-        }
+        """지정된 구역으로 물품을 분류하는 명령을 전송합니다."""
+        # 새로운 바이너리 프로토콜에 맞는 형식으로 명령 생성
+        # SCsoA\n - 분류기(S)에 명령(C)으로 분류(so) A구역으로 보냄
+        command = f"SCso{zone}\n"
         
-        success = self.tcp_handler.send_message("sr", command)
+        success = self.tcp_handler.send_message("S", command)
         if not success:
             logger.error(f"분류 명령 전송 실패: {zone}")
     
@@ -325,11 +267,9 @@ class SortEventHandler:
         # 기존 타이머 취소
         self.cancel_auto_stop_timer()
         
-        from .sort_controller import SortStatus  # 순환 참조 방지
-        
         # 분류기가 작동 중인 경우에만 타이머 설정
-        if self.controller.status == SortStatus.RUNNING.value:
-            self.auto_stop_timer = threading.Timer(10.0, self._auto_stop_timeout)
+        if self.controller.status_manager.state == "running":
+            self.auto_stop_timer = threading.Timer(7.0, self._auto_stop_timeout)
             self.auto_stop_timer.daemon = True
             self.auto_stop_timer.start()
     
@@ -339,22 +279,17 @@ class SortEventHandler:
             self.auto_stop_timer.cancel()
             self.auto_stop_timer = None
     
-   # ==== 자동 정지 타임아웃 처리 ====
+    # ==== 자동 정지 타임아웃 처리 ====
     def _auto_stop_timeout(self):
         """자동 정지 타이머 만료 시 호출됩니다."""
         # 타이머 발생 시 분류기가 여전히 작동 중이고 대기 물품이 없는 경우
         if self.controller.status_manager.state == "running" and self.controller.status_manager.items_waiting == 0:
-            logger.info("자동 정지: 10초간 물품 없음")
+            logger.info("자동 정지: 7초간 물품 없음")
             
             # 정지 명령 전송
-            command = {
-                "dev": "sr",
-                "tp": "cmd",
-                "cmd": "inb",
-                "act": "stop"
-            }
+            command = "SCsp\n"  # 분류기(S) 명령(C) 정지(sp)
             
-            self.tcp_handler.send_message("sr", command)
+            self.tcp_handler.send_message("S", command)
             
             # 상태 업데이트
             self.controller.status_manager.state = "stopped"

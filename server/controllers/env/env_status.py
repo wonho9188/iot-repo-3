@@ -26,40 +26,35 @@ class EnvStatus:
         self.warehouse_temps = {
             "A": None,  # 냉동
             "B": None,  # 냉장
-            "C": None,  # 상온
-            "D": None   # 비식품
+            "C": None   # 상온
         }
         
         # 창고별 목표 온도 설정 (사용자가 UI에서 설정하는 값)
         self.target_temps = {
             "A": -20.0,  # 냉동 창고 목표 온도 기본값
             "B": 4.0,    # 냉장 창고 목표 온도 기본값
-            "C": 20.0,   # 상온 창고 목표 온도 기본값
-            "D": 20.0    # 비식품 창고 목표 온도 기본값
+            "C": 20.0    # 상온 창고 목표 온도 기본값
         }
         
         # 창고별 팬 상태
         self.fan_status = {
             "A": {"mode": FanMode.COOLING, "speed": 1},
             "B": {"mode": FanMode.COOLING, "speed": 1},
-            "C": {"mode": FanMode.OFF, "speed": 0},
-            "D": {"mode": FanMode.OFF, "speed": 0}
+            "C": {"mode": FanMode.OFF, "speed": 0}
         }
         
         # 창고별 환경 상태
         self.env_states = {
             "A": EnvState.NORMAL,
             "B": EnvState.NORMAL,
-            "C": EnvState.NORMAL,
-            "D": EnvState.NORMAL
+            "C": EnvState.NORMAL
         }
         
         # 온도 범위 설정
         self.temp_ranges = {
-            "A": {"min": -30, "max": -18},  # 냉동
+            "A": {"min": -25, "max": -18},  # 냉동
             "B": {"min": 0, "max": 10},     # 냉장
-            "C": {"min": 15, "max": 25},    # 상온
-            "D": {"min": 15, "max": 25}     # 비식품
+            "C": {"min": 15, "max": 25}     # 상온
         }
         
         logger.info("환경 상태 관리자 초기화 완료")
@@ -153,7 +148,7 @@ class EnvStatus:
                     self.fan_status[warehouse]["speed"] = 2
                 else:
                     self.fan_status[warehouse]["speed"] = 3
-        else:  # C, D (상온/비식품)
+        else:  # C (상온)
             # 온도가 범위 내이면 정지
             if self.temp_ranges[warehouse]["min"] <= temp <= self.temp_ranges[warehouse]["max"]:
                 self.fan_status[warehouse]["mode"] = FanMode.OFF
@@ -215,7 +210,7 @@ class EnvStatus:
         """모든 창고의 현재 환경 상태 정보를 반환합니다."""
         warehouses = {}
         
-        for wh in ["A", "B", "C", "D"]:
+        for wh in ["A", "B", "C"]:
             warehouses[wh] = {
                 "temp": self.warehouse_temps[wh],
                 "target_temp": self.target_temps[wh],
