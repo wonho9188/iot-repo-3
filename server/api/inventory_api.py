@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 from flask import Blueprint, jsonify, request
+from api import get_controller
 
 # Blueprint 초기화
 bp = Blueprint('inventory', __name__)
@@ -8,22 +9,30 @@ bp = Blueprint('inventory', __name__)
 # 컨트롤러 의존성
 def get_inventory_controller():
     """재고 관리 컨트롤러 인스턴스를 반환합니다."""
+    controller = get_controller('inventory')
+    if controller:
+        return controller
+    
+    # 이전 방식 시도 (이전 버전 호환성)
     try:
-        from server.main import init_controllers
-        controllers = init_controllers()
-        return controllers["inventory"]
-    except ImportError:
-        try:
-            from main import init_controllers
-            controllers = init_controllers()
-            return controllers["inventory"]
-        except ImportError:
-            import sys
-            import os
-            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            from server.main import init_controllers
-            controllers = init_controllers()
-            return controllers["inventory"]
+        from api import controller
+        if controller and hasattr(controller, 'inventory_controller'):
+            return controller.inventory_controller
+    except (ImportError, AttributeError):
+        pass
+    
+    # 빈 더미 컨트롤러 반환 - 에러 방지
+    class DummyInventoryController:
+        def get_inventory_status(self):
+            return {"status": "unknown", "message": "인벤토리 컨트롤러가 초기화되지 않았습니다."}
+        
+        def get_inventory_items(self, category=None, limit=20, offset=0):
+            return []
+            
+        def get_inventory_item(self, item_id):
+            return None
+    
+    return DummyInventoryController()
 
 @bp.route("/status", methods=["GET"])
 def get_inventory_status():

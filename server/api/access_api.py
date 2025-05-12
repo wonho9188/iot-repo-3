@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 from flask import Blueprint, jsonify, request
+from api import get_controller
 
 # Blueprint 초기화
 bp = Blueprint('access', __name__)
@@ -8,22 +9,28 @@ bp = Blueprint('access', __name__)
 # 컨트롤러 의존성
 def get_access_controller():
     """출입 제어 컨트롤러 인스턴스를 반환합니다."""
-    try:
-        from server.main import init_controllers
-        controllers = init_controllers()
-        return controllers["access"]
-    except ImportError:
-        try:
-            from main import init_controllers
-            controllers = init_controllers()
-            return controllers["access"]
-        except ImportError:
-            import sys
-            import os
-            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            from server.main import init_controllers
-            controllers = init_controllers()
-            return controllers["access"]
+    # 새로운 방식으로 시도
+    controller = get_controller('access')
+    if controller:
+        return controller
+        
+    # 이전 방식 시도
+    from api import controller as main_controller
+    if main_controller and hasattr(main_controller, 'access_controller'):
+        return main_controller.access_controller
+    
+    # 더미 컨트롤러 반환 - 에러 방지
+    class DummyAccessController:
+        def get_access_logs(self):
+            return []
+            
+        def open_door(self):
+            return {"status": "error", "message": "출입 컨트롤러가 초기화되지 않았습니다."}
+            
+        def close_door(self):
+            return {"status": "error", "message": "출입 컨트롤러가 초기화되지 않았습니다."}
+    
+    return DummyAccessController()
 
 @bp.route("/logs", methods=["GET"])
 def get_access_logs():

@@ -5,7 +5,20 @@ import pymysql
 from pymysql.cursors import DictCursor
 from contextlib import contextmanager
 
-from config import CONFIG
+# config.py에서 설정 가져오기 시도
+try:
+    from config import CONFIG
+    USE_CONFIG = True
+except ImportError:
+    USE_CONFIG = False
+    import os
+    CONFIG = {
+        "DB_HOST": os.getenv("DB_HOST", "localhost"),
+        "DB_PORT": int(os.getenv("DB_PORT", "3306")),
+        "DB_USER": os.getenv("DB_USER", "root"),
+        "DB_PASSWORD": os.getenv("DB_PASSWORD", "0000"),
+        "DB_NAME": os.getenv("DB_NAME", "rail_db")
+    }
 
 class RealDB:
     """MySQL 데이터베이스 연결 및 쿼리 클래스
@@ -14,8 +27,20 @@ class RealDB:
     DBHelper 클래스와 동일한 인터페이스를 제공합니다.
     """
     
+    _instance = None
+    
+    def __new__(cls):
+        """싱글톤 패턴 구현"""
+        if cls._instance is None:
+            cls._instance = super(RealDB, cls).__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+    
     def __init__(self):
         """데이터베이스 연결 설정을 초기화합니다."""
+        if hasattr(self, '_initialized') and self._initialized:
+            return
+            
         self.logger = logging.getLogger(__name__)
         self.connection_params = {
             "host": CONFIG["DB_HOST"],
@@ -26,6 +51,21 @@ class RealDB:
             "charset": "utf8mb4",
             "cursorclass": DictCursor
         }
+        
+        # 기본 연결 상태
+        self.connected = False
+        self.connection = None
+        
+        # 연결 시도
+        try:
+            with self.get_connection() as conn:
+                self.connected = True
+                self.logger.info(f"데이터베이스 '{CONFIG['DB_NAME']}'에 연결되었습니다.")
+        except Exception as e:
+            self.logger.error(f"데이터베이스 연결 실패: {str(e)}")
+            self.connected = False
+            
+        self._initialized = True
         
     @contextmanager
     def get_connection(self):
@@ -278,4 +318,27 @@ class RealDB:
         try:
             self.execute_update(query, params)
         except Exception as e:
-            self.logger.error(f"오류 로그 기록 실패: {str(e)}") 
+            self.logger.error(f"오류 로그 기록 실패: {str(e)}")
+
+    # ==== DBManager와 호환되는 메서드 추가 ====
+    def get_connection_status(self) -> Dict[str, Any]:
+        """데이터베이스 연결 상태 반환"""
+        status = {
+            "connected": self.connected,
+            "host": CONFIG["DB_HOST"],
+            "database": CONFIG["DB_NAME"],
+            "user": CONFIG["DB_USER"]
+        }
+        
+        if self.connected:
+            try:
+                with self.get_connection() as conn:
+                    with self.get_cursor(conn) as cursor:
+                        cursor.execute("SELECT VERSION()")
+                        version = cursor.fetchone()
+                        status["version"] = version["VERSION()"] if version else "Unknown"
+            except Exception as e:
+                self.logger.error(f"버전 조회 실패: {str(e)}")
+                status["version"] = "Error"
+        
+        return status 

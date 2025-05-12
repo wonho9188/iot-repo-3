@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from utils.logging import setup_logger
 from flask_socketio import SocketIO
-from config import SERVER_HOST, SERVER_PORT, TCP_PORT, DEBUG, SOCKETIO_PING_TIMEOUT, SOCKETIO_PING_INTERVAL, SOCKETIO_ASYNC_MODE  # socketio 설정 추가
+from config import CONFIG, SERVER_HOST, SERVER_PORT, TCP_PORT, DEBUG, SOCKETIO_PING_TIMEOUT, SOCKETIO_PING_INTERVAL, SOCKETIO_ASYNC_MODE
 from api.sort_api import bp as sort_bp
 from api.inventory_api import bp as inventory_bp
 from api.env_api import bp as env_bp
@@ -11,7 +11,7 @@ from api.expiry_api import bp as expiry_bp
 from controllers.system_controller import get_system_status
 from controllers.sort.sort_controller import SortController
 from utils.tcp_handler import TCPHandler
-from api import set_controller  # API 컨트롤러 설정 함수 임포트
+from api import set_controller, register_controller  # 컨트롤러 관리 함수 임포트
 
 # logger 초기화 전에 로그 디렉토리 확인
 import os
@@ -21,6 +21,24 @@ os.makedirs(log_dir, exist_ok=True)
 # 로거는 한 번만 설정
 logger = setup_logger("server")
 logger.info("==== 서버 시작 ====")
+
+# 데이터베이스 모듈 import 및 초기화
+try:
+    from db import init_database, db_manager
+    
+    # 데이터베이스 초기화
+    try:
+        init_database()
+        db_status = db_manager.get_connection_status()
+        if db_status["connected"]:
+            logger.info(f"데이터베이스 '{db_status['database']}' 연결 성공")
+        else:
+            logger.warning("DB 연결 없음 - 기본 선반 목록 생성")
+    except Exception as e:
+        logger.error(f"데이터베이스 초기화 중 오류: {str(e)}")
+        logger.warning("DB 연결 없음 - 기본 선반 목록 생성")
+except ImportError as e:
+    logger.warning(f"MySQL 관련 모듈을 import할 수 없습니다. DB 기능 없이 진행합니다. 오류: {e}")
 
 app = Flask(__name__)
 CORS(app)
@@ -38,11 +56,39 @@ socketio = SocketIO(
 tcp_handler = TCPHandler(SERVER_HOST, TCP_PORT)
 tcp_handler.start()  # TCP 서버 시작 호출 추가
 
-# 분류기 컨트롤러 초기화
-sort_controller = SortController(tcp_handler, socketio)
+# 컨트롤러 초기화 함수
+def init_controllers():
+    """모든 컨트롤러를 초기화하고 등록합니다."""
+    controllers = {}
+    
+    # 분류기 컨트롤러 초기화
+    sort_controller = SortController(tcp_handler, socketio)
+    controllers["sort"] = sort_controller
+    register_controller("sort", sort_controller)
+    
+    # TODO: 인벤토리 컨트롤러 초기화
+    # inventory_controller = InventoryController(db_manager)
+    # controllers["inventory"] = inventory_controller
+    # register_controller("inventory", inventory_controller)
+    
+    # TODO: 환경 컨트롤러 초기화
+    # env_controller = EnvironmentController(tcp_handler)
+    # controllers["environment"] = env_controller
+    # register_controller("environment", env_controller)
+    
+    # TODO: 출입 컨트롤러 초기화
+    # access_controller = AccessController(tcp_handler)
+    # controllers["access"] = access_controller
+    # register_controller("access", access_controller)
+    
+    return controllers
 
-# API 컨트롤러 설정
-set_controller(sort_controller)  # API에 컨트롤러 등록
+# 모든 컨트롤러 초기화
+controllers = init_controllers()
+
+# 이전 버전 호환성을 위한 설정
+sort_controller = controllers.get("sort")
+set_controller(sort_controller)  # API에 기본 컨트롤러 등록
 
 # 기능별로 분리된 API 모듈을 등록
 app.register_blueprint(sort_bp, url_prefix='/api/sort')

@@ -18,6 +18,21 @@ from config import (
 # 서버 시작 시간 기록
 SERVER_START_TIME = time.time()
 
+def check_db_connection():
+    """
+    데이터베이스 연결 상태를 확인합니다.
+    
+    Returns:
+        str: 연결 상태 (connected/disconnected)
+    """
+    try:
+        from db.db_manager import db_manager
+        status = db_manager.get_connection_status()
+        return "connected" if status["connected"] else "disconnected"
+    except Exception as e:
+        logger.error(f"DB 연결 상태 확인 중 오류: {e}")
+        return "disconnected"
+
 def get_system_status():
     """
     전체 시스템 상태 정보를 수집하여 반환합니다.
@@ -70,20 +85,6 @@ def get_system_status():
             "status": "error",
             "message": f"시스템 상태 조회 중 오류가 발생했습니다: {str(e)}"
         }
-
-def check_db_connection():
-    """
-    데이터베이스 연결 상태를 확인합니다.
-    
-    Returns:
-        str: 연결 상태 (connected/disconnected)
-    """
-    try:
-        # 이 부분은 실제로 DB 연결을 테스트하는 코드로 대체해야 합니다.
-        # 임시로 연결됨으로 반환
-        return "connected"
-    except Exception:
-        return "disconnected"
 
 def get_warehouse_status():
     """

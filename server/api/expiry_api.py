@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 from flask import Blueprint, jsonify, request
+from api import get_controller
 
 # Blueprint 초기화
 bp = Blueprint('expiry', __name__)
@@ -8,22 +9,25 @@ bp = Blueprint('expiry', __name__)
 # 컨트롤러 의존성
 def get_expiry_controller():
     """유통기한 관리 컨트롤러 인스턴스를 반환합니다."""
-    try:
-        from server.main import init_controllers
-        controllers = init_controllers()
-        return controllers["expiry"]
-    except ImportError:
-        try:
-            from main import init_controllers
-            controllers = init_controllers()
-            return controllers["expiry"]
-        except ImportError:
-            import sys
-            import os
-            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            from server.main import init_controllers
-            controllers = init_controllers()
-            return controllers["expiry"]
+    # 새로운 방식으로 시도
+    controller = get_controller('expiry')
+    if controller:
+        return controller
+        
+    # 이전 방식 시도 (이전 버전 호환성)
+    from api import controller as main_controller
+    if main_controller and hasattr(main_controller, 'expiry_controller'):
+        return main_controller.expiry_controller
+    
+    # 더미 컨트롤러 반환 - 에러 방지
+    class DummyExpiryController:
+        def get_expiry_alerts(self, days=7):
+            return []
+            
+        def get_expired_items(self):
+            return []
+    
+    return DummyExpiryController()
 
 @bp.route("/alerts", methods=["GET"])
 def get_expiry_alerts():
