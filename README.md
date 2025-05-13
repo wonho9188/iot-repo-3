@@ -9,6 +9,7 @@ requirements.txt           : 필요 패키지 목록
 ㄴ CODE_STANDARD.md : 코딩 스탠다드
 ㄴ README.md
 
+
 📁 firmware : C++ 기반 아두이노 관리 폴더 (ino 확장자)
 ㄴ config.h                 : 핀 번호, MQTT 토픽, 상수 등 공통 설정 정의
 ㄴ main.ino                 : 진입점. setup()과 loop()만 존재하며 직접 로직 없음
