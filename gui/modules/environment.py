@@ -27,8 +27,7 @@ class EnvironmentPage(QWidget):
         self.warehouses = {
             "A": {"name": "냉동 창고 (A)", "current_temp": -18.5, "target_temp": -18.0, "status": "정상", "mode": "냉각모드 작동중"},
             "B": {"name": "냉장 창고 (B)", "current_temp": 4.2, "target_temp": 4.0, "status": "정상", "mode": "냉각모드 작동중"},
-            "C": {"name": "상온 창고 (C)", "current_temp": 24.2, "target_temp": 24.0, "status": "정상", "mode": "가열모드 작동중"},
-            "D": {"name": "비식품창고 (D)", "current_temp": 23.8, "target_temp": 23.0, "status": "정상", "mode": "냉각모드 작동중"}
+            "C": {"name": "상온 창고 (C)", "current_temp": 24.2, "target_temp": 24.0, "status": "정상", "mode": "가열모드 작동중"}
         }
         
         # 각 창고별 위젯 매핑
@@ -56,14 +55,6 @@ class EnvironmentPage(QWidget):
                 "status_indicator": self.label_status_C,
                 "mode_indicator": self.label_mode_C,
                 "set_temp_btn": self.btn_set_temp_C
-            },
-            "D": {
-                "current_temp": self.label_current_temp_D,
-                "target_temp": self.label_target_temp_D,
-                "temp_input": self.input_temp_D,
-                "status_indicator": self.label_status_D,
-                "mode_indicator": self.label_mode_D,
-                "set_temp_btn": self.btn_set_temp_D
             }
         }
         
@@ -71,8 +62,7 @@ class EnvironmentPage(QWidget):
         self.temp_ranges = {
             "A": (-30.0, 0.0),  # 냉동 창고: -30°C ~ 0°C
             "B": (0.0, 10.0),   # 냉장 창고: 0°C ~ 10°C
-            "C": (15.0, 30.0),  # 상온 창고: 15°C ~ 30°C
-            "D": (15.0, 30.0)   # 비식품 창고: 15°C ~ 30°C
+            "C": (15.0, 30.0)   # 상온 창고: 15°C ~ 30°C
         }
         
         # 각 창고별 설정
@@ -190,7 +180,7 @@ class EnvironmentPage(QWidget):
             "action": "get_status",
             "request_id": "e1",
             "payload": {
-                "warehouses": ["A", "B", "C", "D"]
+                "warehouses": ["A", "B", "C"]
             },
             "ts": int(QDateTime.currentSecsSinceEpoch())
         }

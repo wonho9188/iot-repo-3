@@ -1,17 +1,17 @@
 import sys
-from PySide6.QtWidgets import *
-from PySide6.QtGui import *
-from PySide6.QtCore import *
-from PySide6 import QtUiTools
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6 import uic
 import numpy as np
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 import koreanize_matplotlib
 
 class DashboardPage(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi("ui/widgets/dashboard.ui", self)    
+        uic.loadUi("ui/widgets/dashboard.ui", self)
 
         # 그래프 라인 색상
         self.graph_color = '#4285F4'  # 파란색 - 그래프 라인 및 프로그레스바 공통 색상
@@ -33,7 +33,7 @@ class DashboardPage(QWidget):
         output_total = 100
         alert_total = 5
         self.total_status.setText(f"입고 {input_total}건  |  출고 {output_total}건  |  경고 {alert_total}건")
-        self.total_status.setAlignment(Qt.AlignCenter)
+        self.total_status.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # 1초마다 현재시간, 입출고 현황 업데이트 되도록 연결
         self.timer = QTimer(self)

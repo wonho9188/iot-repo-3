@@ -81,7 +81,6 @@ class DevicesPage(QWidget):
             "A": 0,  # 물건(비식품)
             "B": 0,  # 실온 식품
             "C": 0,  # 냉장 식품
-            "D": 0,  # 냉동 식품
             "error": 0  # 오류 건수
         }
         self.waiting_items = 0
@@ -162,7 +161,6 @@ class DevicesPage(QWidget):
                     self.inventory_counts["A"] = boxes.get("A", 0)
                     self.inventory_counts["B"] = boxes.get("B", 0)
                     self.inventory_counts["C"] = boxes.get("C", 0)
-                    self.inventory_counts["D"] = boxes.get("D", 0)
                     self.inventory_counts["error"] = boxes.get("error", 0)
                 
                 if "waiting" in payload:
@@ -186,11 +184,11 @@ class DevicesPage(QWidget):
                     log_message = f"{timestamp} - QR {barcode} 인식됨, "
                     
                     if category == "food_frozen":
-                        log_message += "냉동식품으로 분류 (창고 D)"
+                        log_message += "냉동식품으로 분류 (창고 C)"
                     elif category == "food_refrigerated":
-                        log_message += "냉장식품으로 분류 (창고 C)"
+                        log_message += "냉장식품으로 분류 (창고 B)"
                     elif category == "food_room_temp":
-                        log_message += "실온식품으로 분류 (창고 B)"
+                        log_message += "실온식품으로 분류 (창고 C)"
                     elif category == "non_food":
                         log_message += "물건으로 분류 (창고 A)"
                     else:
@@ -312,12 +310,11 @@ class DevicesPage(QWidget):
         # 임의의 바코드 생성 (6자리)
         qr = str(random.randint(100000, 999999))
         
-        # 물품 유형 결정 (A: 물건, B: 실온식품, C: 냉장식품, D: 냉동식품)
+        # 물품 유형 결정 (A: 물건, B: 실온식품, C: 냉장식품)
         item_types = [
             ("A", "물건으로 분류 (창고 A)"),
             ("B", "실온식품으로 분류 (창고 B)"),
-            ("C", "냉장식품으로 분류 (창고 C)"),
-            ("D", "냉동식품으로 분류 (창고 D)")
+            ("C", "냉장식품으로 분류 (창고 C)")
         ]
         
         # 가끔 오류 발생시키기 (10% 확률)
@@ -347,7 +344,6 @@ class DevicesPage(QWidget):
         self.inventory_A.setText(f"{self.inventory_counts['A']}개")
         self.inventory_B.setText(f"{self.inventory_counts['B']}개")
         self.inventory_C.setText(f"{self.inventory_counts['C']}개")
-        self.inventory_D.setText(f"{self.inventory_counts['D']}개")
         self.inventory_error.setText(f"{self.inventory_counts['error']}개")
         
         # 대기 물품 및 전체 분류 물품 업데이트

@@ -201,7 +201,7 @@ class AccessPage(QWidget):
         
         # 임시 데이터 생성
         departments = ["물류팀", "관리팀", "품질관리", "재고관리", "보안팀"]
-        areas = ["창고 A", "창고 B", "창고 C", "창고 D", "사무실", "출하장"]
+        areas = ["창고 A", "창고 B", "창고 C", "사무실", "출하장"]
         
         for i in range(15):  # 임의로 15개 데이터 생성
             row_position = self.table_access.rowCount()

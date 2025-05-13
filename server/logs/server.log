@@ -1092,3 +1092,294 @@ HEtp-18.3;6.6;20.6
 2025-05-13 02:28:32,234 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
 2025-05-13 02:28:32,234 DEBUG: STR: 
  [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 03:11:36,593 INFO: ==== 서버 종료 ==== [in C:\Users\jun\Documents\github\iot-repo-3\server\main.py:124]
+2025-05-13 03:39:24,911 INFO: ==== 서버 시작 ==== [in C:\Users\jun\Documents\github\iot-repo-3\server\main.py:29]
+2025-05-13 03:39:33,441 WARNING: DB 연결 없음 - 기본 선반 목록 생성 [in C:\Users\jun\Documents\github\iot-repo-3\server\main.py:42]
+2025-05-13 08:55:17,333 INFO: ==== 서버 시작 ==== [in C:\Users\jun\Documents\github\iot-repo-3\server\main.py:29]
+2025-05-13 08:55:25,672 WARNING: DB 연결 없음 - 기본 선반 목록 생성 [in C:\Users\jun\Documents\github\iot-repo-3\server\main.py:42]
+2025-05-13 09:02:38,255 DEBUG: 데이터 수신: 5 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:38,255 DEBUG: HEX: 48 45 77 41 31 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:38,255 DEBUG: STR: HEwA1 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:38,410 DEBUG: 데이터 수신: 43 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:38,410 DEBUG: HEX: 0d 0a 48 43 66 41 30 0d 0a 48 43 66 42 30 0d 0a 48 43 66 43 30 0d 0a 48 45 74 70 2d 33 30 2e 30 3b 34 2e 39 3b 31 39 2e 30 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:38,410 DEBUG: STR: 
+HCfA0
+HCfB0
+HCfC0
+HEtp-30.0;4.9;19.0
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:43,197 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:43,197 DEBUG: HEX: 48 45 74 70 2d 32 37 2e 35 3b 34 2e 38 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:43,197 DEBUG: STR: HEtp-27.5;4.8;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:43,274 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:43,275 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:43,275 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:48,297 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:48,298 DEBUG: HEX: 48 45 74 70 2d 33 30 2e 30 3b 35 2e 31 3b 31 39 2e 33 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:48,298 DEBUG: STR: HEtp-30.0;5.1;19.3 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:48,400 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:48,400 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:48,400 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:53,188 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:53,188 DEBUG: HEX: 48 45 74 70 2d 33 30 2e 30 3b 34 2e 38 3b 31 38 2e 39 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:53,190 DEBUG: STR: HEtp-30.0;4.8;18.9 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:53,300 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:53,302 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:53,303 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:58,326 DEBUG: 데이터 수신: 5 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:58,327 DEBUG: HEX: 48 43 66 41 33 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:58,327 DEBUG: STR: HCfA3 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:02:58,423 DEBUG: 데이터 수신: 50 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:02:58,423 DEBUG: HEX: 0d 0a 48 45 77 42 31 0d 0a 48 43 66 42 33 0d 0a 48 45 77 43 31 0d 0a 48 43 66 43 33 0d 0a 48 45 74 70 31 33 2e 31 3b 31 33 2e 36 3b 33 36 2e 34 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:02:58,423 DEBUG: STR: 
+HEwB1
+HCfB3
+HEwC1
+HCfC3
+HEtp13.1;13.6;36.4
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:03,215 DEBUG: 데이터 수신: 5 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:03,215 DEBUG: HEX: 48 45 77 41 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:03,215 DEBUG: STR: HEwA0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:03,440 DEBUG: 데이터 수신: 57 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:03,440 DEBUG: HEX: 0d 0a 48 43 66 41 32 0d 0a 48 45 77 42 30 0d 0a 48 43 66 42 30 0d 0a 48 45 77 43 30 0d 0a 48 43 66 43 30 0d 0a 48 45 74 70 2d 31 35 2e 38 3b 36 2e 38 3b 32 31 2e 34 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:03,440 DEBUG: STR: 
+HCfA2
+HEwB0
+HCfB0
+HEwC0
+HCfC0
+HEtp-15.8;6.8;21.4
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:08,317 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:08,317 DEBUG: HEX: 48 45 74 70 2d 31 35 2e 39 3b 36 2e 39 3b 32 30 2e 33 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:08,322 DEBUG: STR: HEtp-15.9;6.9;20.3 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:08,466 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:08,468 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:08,468 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:13,283 DEBUG: 데이터 수신: 5 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:13,283 DEBUG: HEX: 48 43 66 42 31 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:13,283 DEBUG: STR: HCfB1 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:13,426 DEBUG: 데이터 수신: 22 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:13,428 DEBUG: HEX: 0d 0a 48 45 74 70 2d 31 35 2e 38 3b 37 2e 31 3b 32 31 2e 36 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:13,428 DEBUG: STR: 
+HEtp-15.8;7.1;21.6
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:18,288 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:18,290 DEBUG: HEX: 48 45 74 70 2d 31 35 2e 38 3b 38 2e 31 3b 32 30 2e 39 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:18,290 DEBUG: STR: HEtp-15.8;8.1;20.9 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:18,401 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:18,401 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:18,401 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:23,231 DEBUG: 데이터 수신: 5 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:23,231 DEBUG: HEX: 48 43 66 41 31 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:23,231 DEBUG: STR: HCfA1 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:23,398 DEBUG: 데이터 수신: 29 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:23,398 DEBUG: HEX: 0d 0a 48 43 66 42 30 0d 0a 48 45 74 70 2d 31 36 2e 31 3b 36 2e 36 3b 31 39 2e 33 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:23,398 DEBUG: STR: 
+HCfB0
+HEtp-16.1;6.6;19.3
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:28,231 DEBUG: 데이터 수신: 5 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:28,232 DEBUG: HEX: 48 43 66 41 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:28,232 DEBUG: STR: HCfA0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:28,324 DEBUG: 데이터 수신: 22 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:28,328 DEBUG: HEX: 0d 0a 48 45 74 70 2d 31 39 2e 31 3b 34 2e 36 3b 31 39 2e 31 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:28,329 DEBUG: STR: 
+HEtp-19.1;4.6;19.1
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:33,353 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:33,353 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 37 3b 34 2e 36 3b 31 39 2e 31 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:33,353 DEBUG: STR: HEtp-19.7;4.6;19.1 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:33,550 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:33,550 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:33,550 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:38,262 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:38,263 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 36 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:38,263 DEBUG: STR: HEtp-20.2;4.6;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:38,362 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:38,362 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:38,362 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:43,303 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:43,303 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 35 3b 34 2e 37 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:43,303 DEBUG: STR: HEtp-20.5;4.7;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:43,477 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:43,477 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:43,477 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:48,402 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:48,402 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 31 3b 34 2e 35 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:48,402 DEBUG: STR: HEtp-20.1;4.5;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:48,533 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:48,533 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:48,533 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:53,270 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:53,270 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 34 3b 34 2e 35 3b 31 39 2e 31 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:53,270 DEBUG: STR: HEtp-20.4;4.5;19.1 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:53,381 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:53,381 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:53,381 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:58,435 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:58,435 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 34 3b 34 2e 35 3b 31 39 2e 34 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:58,435 DEBUG: STR: HEtp-19.4;4.5;19.4 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:03:58,539 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:03:58,539 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:03:58,545 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:05,164 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:05,164 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 38 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:05,164 DEBUG: STR: HEtp-20.2;4.8;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:05,241 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:05,241 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:05,241 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:08,283 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:08,283 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 35 2e 32 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:08,287 DEBUG: STR: HEtp-20.2;5.2;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:08,376 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:08,379 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:08,379 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:13,384 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:13,385 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 39 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:13,385 DEBUG: STR: HEtp-20.2;4.9;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:13,486 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:13,487 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:13,488 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:18,338 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:18,338 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 39 3b 31 39 2e 36 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:18,340 DEBUG: STR: HEtp-20.2;4.9;19.6 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:18,458 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:18,458 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:18,458 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:23,407 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:23,407 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 38 3b 34 2e 38 3b 31 38 2e 39 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:23,407 DEBUG: STR: HEtp-19.8;4.8;18.9 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:23,538 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:23,538 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:23,538 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:28,331 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:28,331 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 38 3b 35 2e 30 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:28,331 DEBUG: STR: HEtp-19.8;5.0;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:28,441 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:28,441 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:28,441 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:33,356 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:33,356 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 36 3b 31 39 2e 31 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:33,356 DEBUG: STR: HEtp-20.2;4.6;19.1 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:33,458 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:33,458 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:33,458 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:38,425 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:38,425 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 30 3b 34 2e 33 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:38,425 DEBUG: STR: HEtp-20.0;4.3;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:38,487 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:38,487 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:38,487 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:43,391 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:43,391 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 35 3b 31 39 2e 33 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:43,391 DEBUG: STR: HEtp-20.2;4.5;19.3 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:43,494 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:43,494 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:43,494 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:48,323 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:48,324 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 38 3b 34 2e 39 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:48,324 DEBUG: STR: HEtp-19.8;4.9;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:48,408 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:48,410 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:48,410 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:53,311 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:53,311 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 37 3b 35 2e 30 3b 31 39 2e 34 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:53,311 DEBUG: STR: HEtp-19.7;5.0;19.4 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:53,414 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:53,414 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:53,414 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:58,295 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:58,295 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 38 3b 31 39 2e 34 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:58,299 DEBUG: STR: HEtp-20.2;4.8;19.4 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:04:58,550 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:04:58,552 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:04:58,552 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:03,361 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:03,361 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 37 3b 34 2e 38 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:03,361 DEBUG: STR: HEtp-19.7;4.8;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:03,469 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:03,469 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:03,469 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:08,301 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:08,301 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 38 3b 34 2e 36 3b 31 39 2e 32 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:08,311 DEBUG: STR: HEtp-19.8;4.6;19.2 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:08,458 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:08,458 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:08,458 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:13,387 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:13,387 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 34 3b 34 2e 35 3b 31 39 2e 33 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:13,387 DEBUG: STR: HEtp-20.4;4.5;19.3 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:13,481 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:13,481 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:13,481 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:18,403 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:18,403 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 39 3b 34 2e 39 3b 31 39 2e 31 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:18,408 DEBUG: STR: HEtp-19.9;4.9;19.1 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:18,504 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:18,504 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:18,504 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:23,375 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:23,375 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 30 3b 35 2e 31 3b 31 39 2e 30 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:23,376 DEBUG: STR: HEtp-20.0;5.1;19.0 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:23,438 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:23,438 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:23,438 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:28,327 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:28,327 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 39 3b 31 39 2e 33 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:28,327 DEBUG: STR: HEtp-20.2;4.9;19.3 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:28,444 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:28,444 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:28,447 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:33,333 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:33,333 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 39 3b 34 2e 38 3b 31 39 2e 33 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:33,339 DEBUG: STR: HEtp-19.9;4.8;19.3 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:33,503 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:33,503 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:33,503 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:38,332 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:38,333 DEBUG: HEX: 48 45 74 70 2d 31 39 2e 38 3b 34 2e 38 3b 31 39 2e 31 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:38,333 DEBUG: STR: HEtp-19.8;4.8;19.1 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:38,465 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:38,465 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:38,467 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:43,394 DEBUG: 데이터 수신: 18 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:43,394 DEBUG: HEX: 48 45 74 70 2d 32 30 2e 32 3b 34 2e 39 3b 31 39 2e 34 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:43,394 DEBUG: STR: HEtp-20.2;4.9;19.4 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:43,510 DEBUG: 데이터 수신: 2 바이트 [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:37]
+2025-05-13 09:05:43,512 DEBUG: HEX: 0d 0a [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:38]
+2025-05-13 09:05:43,512 DEBUG: STR: 
+ [in C:\Users\jun\Documents\github\iot-repo-3\server\utils\tcp_debug_helper.py:39]
+2025-05-13 09:05:48,268 INFO: ==== 서버 종료 ==== [in C:\Users\jun\Documents\github\iot-repo-3\server\main.py:124]

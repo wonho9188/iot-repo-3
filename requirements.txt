@@ -22,6 +22,8 @@ PyQt6-sip==13.6.0
 numpy==1.26.0
 matplotlib==3.8.0
 koreanize-matplotlib==0.1.1
+setuptools>=65.5.0
+websocket-client>=1.5.0
 
 # test
 pytest==7.4.2
