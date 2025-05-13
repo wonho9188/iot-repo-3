@@ -1,19 +1,33 @@
-# 웹 서버 (웹 API를 만들기 위한 도구)
-fastapi==0.103.1
-uvicorn==0.23.2
+# Flask
+Flask==2.3.3
+Werkzeug==2.3.7
+Jinja2==3.1.2
+itsdangerous==2.1.2
+flask-cors==4.0.0
+flask-socketio==5.3.5
+# database
+PyMySQL==1.1.0
+SQLAlchemy==2.0.23
+mysql-connector-python==8.2.0
 
-# 웹소켓 (실시간 통신을 위한 도구)
-websockets==11.0.3
-
-# MQTT (하드웨어와 통신하기 위한 도구)
-paho-mqtt==2.2.1
-
-# 데이터베이스 연결
-sqlalchemy==2.0.20
-pymysql==1.1.0
-
-# 환경 설정 관리
+# logging
 python-dotenv==1.0.0
+loguru==0.7.2
+requests==2.31.0
 
-# 데이터 변환
-pydantic==2.3.0
+# GUI
+PyQt6==6.6.0
+PyQt6-Qt6==6.6.0
+PyQt6-sip==13.6.0
+numpy==1.26.0
+matplotlib==3.8.0
+koreanize-matplotlib==0.1.1
+setuptools>=65.5.0
+websocket-client>=1.5.0
+
+# test
+pytest==7.4.2
+black==23.9.1
+
+# system monitoring
+psutil==5.9.6
