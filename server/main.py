@@ -12,7 +12,6 @@ from controllers.system_controller import get_system_status
 from controllers.sort.sort_controller import SortController
 from utils.tcp_handler import TCPHandler
 from api import set_controller, register_controller  # 컨트롤러 관리 함수 임포트
-# main.py 상단에 추가
 try:
     from utils.tcp_debug_helper import *
     print("디버깅 모드가 활성화되었습니다.")
@@ -58,6 +57,15 @@ socketio = SocketIO(
     async_mode=SOCKETIO_ASYNC_MODE
 )
 
+# Socket.IO 라우터 등록 - /ws 경로 추가
+@socketio.on('connect', namespace='/ws')
+def handle_connect():
+    logger.info("클라이언트 WebSocket 연결됨")
+
+@socketio.on('disconnect', namespace='/ws')
+def handle_disconnect():
+    logger.info("클라이언트 WebSocket 연결 종료됨")
+
 # TCP 핸들러 초기화 및 시작
 tcp_handler = TCPHandler(SERVER_HOST, TCP_PORT)
 tcp_handler.start()  # TCP 서버 시작 호출 추가
@@ -78,7 +86,7 @@ def init_controllers():
     # register_controller("inventory", inventory_controller)
     
     # 환경 컨트롤러 초기화
-    from controllers.env.env_controller import EnvController
+    from controllers.env_controller import EnvController
     env_controller = EnvController(tcp_handler, socketio, db_manager)
     controllers["environment"] = env_controller
     register_controller("environment", env_controller)

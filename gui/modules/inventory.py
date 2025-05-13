@@ -100,14 +100,14 @@ class InventoryListDialog(QDialog):
         data = [
             ("2025-05-01", "1250123545", "DHA 등 필수 영양소 150g", "2028-04-28", "1000", "B4"),
             ("2025-05-01", "4560982312", "고추장 500g", "2026-08-15", "200", "A2"),
-            ("2025-05-02", "7891234567", "냉동 삼겹살 1kg", "2026-01-10", "150", "D3"),
+            ("2025-05-02", "7891234567", "냉동 삼겹살 1kg", "2026-01-10", "150", "C3"),
             ("2025-05-02", "3216549870", "우유 1L", "2025-05-20", "300", "C1"),
             ("2025-05-03", "9876543210", "즉석밥 210g", "2027-12-31", "500", "B2"),
-            ("2025-05-03", "1357924680", "냉동 만두 500g", "2026-06-15", "250", "D1"),
+            ("2025-05-03", "1357924680", "냉동 만두 500g", "2026-06-15", "250", "C1"),
             ("2025-05-04", "2468013579", "사과주스 1.5L", "2025-09-30", "180", "B3"),
             ("2025-05-04", "1122334455", "김치 1kg", "2025-07-15", "100", "C2"),
             ("2025-05-05", "6677889900", "초콜릿 100g", "2027-02-28", "400", "A1"),
-            ("2025-05-05", "5544332211", "냉동 피자", "2026-03-10", "120", "D4")
+            ("2025-05-05", "5544332211", "냉동 피자", "2026-03-10", "120", "C4")
         ]
         
         # 테이블에 데이터 추가
@@ -134,10 +134,9 @@ class InventoryPage(QWidget):
         
         # 재고 데이터 초기화
         self.inventory_data = {
-            'A': {'count': 50, 'percentage': 25, 'usage': 56},
-            'B': {'count': 30, 'percentage': 15, 'usage': 24},
-            'C': {'count': 70, 'percentage': 35, 'usage': 35},
-            'D': {'count': 50, 'percentage': 25, 'usage': 75}
+            'A': {'count': 50, 'percentage': 33, 'usage': 56},
+            'B': {'count': 30, 'percentage': 20, 'usage': 24},
+            'C': {'count': 70, 'percentage': 47, 'usage': 35}
         }
         
         # 웹소켓 설정
@@ -209,7 +208,7 @@ class InventoryPage(QWidget):
             elif category == "inv" and action == "items":
                 if "items" in payload:
                     items = payload.get("items", [])
-                    count_a = count_b = count_c = count_d = 0
+                    count_a = count_b = count_c = 0
                     
                     for item in items:
                         wh = item.get("warehouse", "")
@@ -219,20 +218,16 @@ class InventoryPage(QWidget):
                             count_b += 1
                         elif wh == "C":
                             count_c += 1
-                        elif wh == "D":
-                            count_d += 1
                     
-                    total = count_a + count_b + count_c + count_d
+                    total = count_a + count_b + count_c
                     if total > 0:
                         self.inventory_data['A']['count'] = count_a
                         self.inventory_data['B']['count'] = count_b
                         self.inventory_data['C']['count'] = count_c
-                        self.inventory_data['D']['count'] = count_d
                         
                         self.inventory_data['A']['percentage'] = round(count_a / total * 100)
                         self.inventory_data['B']['percentage'] = round(count_b / total * 100)
                         self.inventory_data['C']['percentage'] = round(count_c / total * 100)
-                        self.inventory_data['D']['percentage'] = round(count_d / total * 100)
                         
                         self.update_ui()
                 
@@ -292,15 +287,13 @@ class InventoryPage(QWidget):
         # 데이터 준비
         labels = [f'창고 A ({self.inventory_data["A"]["percentage"]}%)',
                  f'창고 B ({self.inventory_data["B"]["percentage"]}%)',
-                 f'창고 C ({self.inventory_data["C"]["percentage"]}%)',
-                 f'창고 D ({self.inventory_data["D"]["percentage"]}%)']
+                 f'창고 C ({self.inventory_data["C"]["percentage"]}%)']
         
         sizes = [self.inventory_data['A']['count'],
                 self.inventory_data['B']['count'],
-                self.inventory_data['C']['count'],
-                self.inventory_data['D']['count']]
+                self.inventory_data['C']['count']]
         
-        colors = ['#4285F4', '#0F9D58', '#F4B400', '#DB4437']
+        colors = ['#4285F4', '#0F9D58', '#F4B400']
         
         # 원 그래프 그리기
         wedges, texts, autotexts = ax.pie(sizes, colors=colors, autopct='%1.1f%%',
@@ -321,13 +314,11 @@ class InventoryPage(QWidget):
         self.progressBar_A.setValue(self.inventory_data['A']['usage'])
         self.progressBar_B.setValue(self.inventory_data['B']['usage'])
         self.progressBar_C.setValue(self.inventory_data['C']['usage'])
-        self.progressBar_D.setValue(self.inventory_data['D']['usage'])
         
         # 레이블 업데이트
         self.label_a_count.setText(f"{self.inventory_data['A']['count']}개 ({self.inventory_data['A']['percentage']}%)")
         self.label_b_count.setText(f"{self.inventory_data['B']['count']}개 ({self.inventory_data['B']['percentage']}%)")
         self.label_c_count.setText(f"{self.inventory_data['C']['count']}개 ({self.inventory_data['C']['percentage']}%)")
-        self.label_d_count.setText(f"{self.inventory_data['D']['count']}개 ({self.inventory_data['D']['percentage']}%)")
         
         # 전체 물품 수 업데이트
         total_count = sum(wh['count'] for wh in self.inventory_data.values())
